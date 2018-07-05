@@ -1,0 +1,414 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       29/Jun/2018  00:30:09
+# Copyright 1999-2017 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  D:\EiE\EiE Git\AntBleBeacon\bsp\abbcn-ehdw-01.c
+#    Command line =  
+#        -f C:\Users\ENGENU~1\AppData\Local\Temp\EW5650.tmp ("D:\EiE\EiE
+#        Git\AntBleBeacon\bsp\abbcn-ehdw-01.c" -D NRF51 -lC "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\Debug\List" -o "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files\IAR
+#        Systems\EWARM_8_10_1\arm\INC\c\DLib_Config_Normal.h" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\bsp\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\application\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\s310\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\ble_services\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\device_manager\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\app_common\"
+#        -On --require_prototypes -I "C:\Program Files\IAR
+#        Systems\EWARM_8_10_1\arm\CMSIS\Include\")
+#    Locale       =  C
+#    List file    =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\Debug\List\abbcn-ehdw-01.lst
+#    Object file  =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\Debug\Obj\abbcn-ehdw-01.o
+#
+###############################################################################
+
+D:\EiE\EiE Git\AntBleBeacon\bsp\abbcn-ehdw-01.c
+      1          /***********************************************************************************************************************
+      2          File: abbcn-ehdw-01.c                                                                
+      3          
+      4          Description:
+      5          This file provides board support functions for the nRF51422 processor on the ABBCN-EHDW-01 development board.
+      6          ***********************************************************************************************************************/
+      7          
+      8          #include "configuration.h"
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                  ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                                    ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                                                      ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+  void LedOn(LedNumberType eLED_);
+             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",76  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedOff(LedNumberType eLED_);
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",77  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedToggle(LedNumberType eLED_);
+                 ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",78  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedPWM(LedNumberType eLED_, LedRateType ePwmRate_);
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",79  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedBlink(LedNumberType eLED_, LedRateType ePwmRate_);
+                ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",80  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+      9          
+     10          /***********************************************************************************************************************
+     11          Global variable definitions with scope across entire project.
+     12          All Global variable names shall start with "G_"
+     13          ***********************************************************************************************************************/
+     14          
+     15          /* New variables */
+     16          
+     17          /*! LED locations: order must correspond to the order set in LedNameType in the header file. */
+     18          const Nrf51PinConfigurationType G_asBspLedConfigurations[U8_TOTAL_LEDS] = { {P0_30_BLU7, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     19                                                                                      {P0_29_GRN7, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     20                                                                                      {P0_28_RED2, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     21                                                                                      {P0_27_RED3, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     22                                                                                      {P0_26_RED4, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     23                                                                                      {P0_25_RED5, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     24                                                                                      {P0_24_RED7, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     25                                                                                      {P0_23_RED0, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     26                                                                                      {P0_22_RED6, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     27                                                                                      {P0_21_RED1, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     28                                                                                      {P0_13_BLU1, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     29                                                                                      {P0_12_BLU0, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     30                                                                                      {P0_11_GRN0, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     31                                                                                      {P0_10_GRN1, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     32                                                                                      {P0_09_BLU2, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     33                                                                                      {P0_08_GRN2, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     34                                                                                      {P0_07_BLU3, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     35                                                                                      {P0_06_GRN3, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     36                                                                                      {P0_05_BLU4, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     37                                                                                      {P0_04_GRN4, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     38                                                                                      {P0_03_BLU5, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     39                                                                                      {P0_02_GRN5, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     40                                                                                      {P0_01_BLU6, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     41                                                                                      {P0_00_GRN6, ACTIVE_HIGH, GPIOE_NO_CHANNEL, 0}, 
+     42                                                                                    };
+     43          
+     44          
+     45          
+     46          
+     47          /*! Button locations: order must correspond to the order set in ButtonNameType in the header file. */
+     48          const Nrf51PinConfigurationType G_asBspButtonConfigurations[U8_TOTAL_BUTTONS] = { {P0_20_BUTTON, ACTIVE_LOW, GPIOE_EVENT0, BIT0}, 
+     49                                                                                          };
+     50          
+     51          /*--------------------------------------------------------------------------------------------------------------------*/
+     52          /* Existing variables (defined in other files -- should all contain the "extern" keyword) */
+     53          extern volatile u32 G_u32SystemTime1ms;                /*!< @brief From main.c */
+     54          extern volatile u32 G_u32SystemTime1s;                 /*!< @brief From main.c */
+     55          extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c */
+     56           
+     57          
+     58          /***********************************************************************************************************************
+     59          Global variable definitions with scope limited to this local application.
+     60          Variable names shall start with "Bsp_" and be declared as static.
+     61          ***********************************************************************************************************************/
+     62          
+     63          
+     64          /***********************************************************************************************************************
+     65          Function Definitions
+     66          ***********************************************************************************************************************/
+     67          
+     68          /*--------------------------------------------------------------------------------------------------------------------*/
+     69          /* Public Functions */
+     70          /*--------------------------------------------------------------------------------------------------------------------*/
+     71          
+     72          
+     73          /*--------------------------------------------------------------------------------------------------------------------*/
+     74          /* Protected Functions */
+     75          /*--------------------------------------------------------------------------------------------------------------------*/
+     76          
+     77          /*----------------------------------------------------------------------------------------------------------------------
+     78          Function: WatchDogSetup
+     79          
+     80          Description:
+     81          Configures the watchdog timer.  The dog runs at 32.768kHz from the slow built-in RC clock source which varies over 
+     82          operating conditions from 30kHz to 60kHz.
+     83          Since the main loop time / sleep time should be 1 ms most of the time, choosing a value
+     84          of 5 seconds should be plenty to avoid watchdog resets.  
+     85          
+     86          Note: the processor allows the MR register to be written just once.
+     87          
+     88          Requires:
+     89            - 
+     90          
+     91          Promises:
+     92            - Watchdog is set for 5 second timeout but not yet enabled
+     93          */
+     94          void WatchDogSetup(void)
+     95          {
+     96           
+     97          } /* end WatchDogSetup() */
+     98          
+     99          
+    100          /*----------------------------------------------------------------------------------------------------------------------
+    101          Function: GpioSetup
+    102          
+    103          Description
+    104          Loads all registers required to set up GPIO on the processor.
+    105          
+    106          Requires:
+    107            - All configurations must match connected hardware.
+    108          
+    109          Promises:
+    110            - All I/O lines are set for their required function and start-state
+    111          */
+    112          void GpioSetup(void)
+    113          {
+    114            /* Set all of the pin function registers in port 0 */
+    115            NRF_GPIO->PIN_CNF[P0_30_INDEX] = P0_30_BLU7_CNF;
+    116            NRF_GPIO->PIN_CNF[P0_29_INDEX] = P0_29_GRN7_CNF;
+    117            NRF_GPIO->PIN_CNF[P0_28_INDEX] = P0_28_RED2_CNF;
+    118            NRF_GPIO->PIN_CNF[P0_27_INDEX] = P0_27_RED3_CNF;
+    119            NRF_GPIO->PIN_CNF[P0_26_INDEX] = P0_26_RED4_CNF;
+    120            NRF_GPIO->PIN_CNF[P0_25_INDEX] = P0_25_RED5_CNF;
+    121            NRF_GPIO->PIN_CNF[P0_24_INDEX] = P0_24_RED7_CNF;
+    122            NRF_GPIO->PIN_CNF[P0_23_INDEX] = P0_23_RED0_CNF;
+    123            NRF_GPIO->PIN_CNF[P0_22_INDEX] = P0_22_RED6_CNF;
+    124            NRF_GPIO->PIN_CNF[P0_21_INDEX] = P0_21_RED1_CNF;
+    125            NRF_GPIO->PIN_CNF[P0_20_INDEX] = P0_20_BUTTON_CNF;
+    126            NRF_GPIO->PIN_CNF[P0_19_INDEX] = P0_19_EXT1_CNF;
+    127            NRF_GPIO->PIN_CNF[P0_18_INDEX] = P0_18_EXT2_CNF;
+    128            NRF_GPIO->PIN_CNF[P0_17_INDEX] = P0_17_EXT3_CNF;
+    129            NRF_GPIO->PIN_CNF[P0_16_INDEX] = P0_16_SCL_CNF;
+    130            NRF_GPIO->PIN_CNF[P0_15_INDEX] = P0_15_SDA_CNF;
+    131            NRF_GPIO->PIN_CNF[P0_14_INDEX] = P0_14_INT2_CNF;
+    132            NRF_GPIO->PIN_CNF[P0_13_INDEX] = P0_13_BLU1_CNF;
+    133            NRF_GPIO->PIN_CNF[P0_12_INDEX] = P0_12_BLU0_CNF;
+    134            NRF_GPIO->PIN_CNF[P0_11_INDEX] = P0_11_GRN0_CNF;
+    135            NRF_GPIO->PIN_CNF[P0_10_INDEX] = P0_10_GRN1_CNF;
+    136            NRF_GPIO->PIN_CNF[P0_09_INDEX] = P0_09_BLU2_CNF;
+    137            NRF_GPIO->PIN_CNF[P0_08_INDEX] = P0_08_GRN2_CNF;
+    138            NRF_GPIO->PIN_CNF[P0_07_INDEX] = P0_07_BLU3_CNF;
+    139            NRF_GPIO->PIN_CNF[P0_06_INDEX] = P0_06_GRN3_CNF;
+    140            NRF_GPIO->PIN_CNF[P0_05_INDEX] = P0_05_BLU4_CNF;
+    141            NRF_GPIO->PIN_CNF[P0_04_INDEX] = P0_04_GRN4_CNF;
+    142            NRF_GPIO->PIN_CNF[P0_03_INDEX] = P0_03_BLU5_CNF;
+    143            NRF_GPIO->PIN_CNF[P0_02_INDEX] = P0_02_GRN5_CNF;
+    144            NRF_GPIO->PIN_CNF[P0_01_INDEX] = P0_01_BLU6_CNF;
+    145            NRF_GPIO->PIN_CNF[P0_00_INDEX] = P0_00_GRN6_CNF;
+    146             
+    147          } /* end GpioSetup() */
+    148          
+    149          
+    150          /*----------------------------------------------------------------------------------------------------------------------
+    151          Function: PowerSetup
+    152          
+    153          Description
+    154          Loads registers to configure various power control features of the 51422.
+    155          
+    156          Requires:
+    157            - 
+    158          
+    159          Promises:
+    160            - 
+    161          */
+    162          void PowerSetup(void)
+    163          {
+    164            /* Set the sub power mode to constant latency (pg. 42 in the ref manual) */
+    165            NRF_POWER->TASKS_LOWPWR   = 0;
+    166            NRF_POWER->TASKS_CONSTLAT = 1;
+    167          
+    168          } /* end PowerSetup() */
+    169          
+    170          
+    171          /*----------------------------------------------------------------------------------------------------------------------
+    172          Function: ClockSetup
+    173          
+    174          Description:
+    175          Loads all registers required to set up the processor clocks.  The main clock, HFCLK is sourced from the
+    176          16MHz crystal.  The slow clock, LFCLK, will be synthesized from the 16MHz and configured to provide
+    177          a 1ms system tick.
+    178          
+    179          Requires:
+    180            - 
+    181          
+    182          Promises:
+    183            - 
+    184          */
+    185          void ClockSetup(void)
+    186          {
+    187            u32 u32ClockStartTimeout = OSC_STARTUP_TIMOUT;
+    188            
+    189            /* Start the main clock (HFCLK) and wait for the event to indicate it has started */
+    190            NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    191            NRF_CLOCK->TASKS_HFCLKSTART = 1;
+    192            while( !NRF_CLOCK->EVENTS_HFCLKSTARTED && (--u32ClockStartTimeout != 0) );
+    193            
+    194            /* Check for timeout - if the clock didn't start, turn it off and flag it */
+    195            if(u32ClockStartTimeout == 0)
+    196            {
+    197              NRF_CLOCK->TASKS_HFCLKSTOP = 1;
+    198              G_u32SystemFlags |= _SYSTEM_HFCLK_NO_START;
+    199            }
+    200            NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+    201             
+    202            
+    203            /* Setup and start the 32.768kHz (LFCLK) clock (synthesized from HFCLK) */
+    204            NRF_CLOCK->LFCLKSRC = (CLOCK_LFCLKSRC_SRC_Synth << CLOCK_LFCLKSRC_SRC_Pos);
+    205            NRF_CLOCK->EVENTS_LFCLKSTARTED = 0;
+    206            NRF_CLOCK->TASKS_LFCLKSTART = 1;
+    207            
+    208            /* No need for timeout as an HFCLK of some sort is guaranteed to be running so LFCLK has to start */
+    209            while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0);
+    210            NRF_CLOCK->EVENTS_LFCLKSTARTED = 0;
+    211           
+    212          #if 0  /* Can't use RTC because we synthesize LFCLK and therefore RTC would not be clocked when HFCLK is sleeping */  
+    213            /* Configure the RTC to give a 1ms tick */
+    214            NRF_RTC1->STOP = 1;
+    215            NRF_RTC1->PRESCALER = RTC_PRESCALE_INIT;
+    216            NRF_RTC1->EVTENSET = (1 << RTC_EVTEN_TICK_Pos);
+    217            NRF_RTC1->INTENSET = (1 << RTC_INTENSET_TICK_Pos);
+    218            
+    219            /* Clear then start the RTC */
+    220            NRF_RTC1->CLEAR = 1;
+    221            NRF_RTC1->START = 1;
+    222          #endif
+    223            
+    224          } /* end ClockSetup */
+    225          
+    226          
+    227          /*----------------------------------------------------------------------------------------------------------------------
+    228          Function: InterruptSetup
+    229          
+    230          Description:
+    231          Performs initial interrupt setup.
+    232          
+    233          Requires:
+    234            -
+    235          
+    236          Promises:
+    237            - 
+    238          */
+    239          void InterruptSetup(void)
+    240          {
+    241          
+    242            
+    243          } /* end InterruptSetup */
+    244          
+    245          
+    246          /*----------------------------------------------------------------------------------------------------------------------
+    247          Function: SysTickSetup
+    248          
+    249          Description:
+    250          Initializes the 1ms and 1s System Ticks from the TIMER1 peripheral.
+    251          Since this application is not concerned about power, we can keep the 16MHz clock
+    252          on and power TIMER1 all the time.  
+    253          
+    254          Requires:
+    255            -
+    256          
+    257          Promises:
+    258            - Both system timers are zeroed and the Timer is configured to produce 1ms interrupts
+    259          */
+    260          void SysTickSetup(void)
+    261          {
+    262            G_u32SystemTime1ms = 0;      
+    263            G_u32SystemTime1s  = 0;   
+    264            
+    265            /* Load the SysTick Timer */
+    266            NRF_TIMER1->MODE      = TIMER_MODE_MODE_Timer << TIMER_MODE_MODE_Pos;
+    267            NRF_TIMER1->BITMODE   = TIMER_BITMODE_BITMODE_16Bit << TIMER_BITMODE_BITMODE_Pos;
+    268            NRF_TIMER1->PRESCALER = 0;
+    269            NRF_TIMER1->SHORTS    = TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos;
+    270            NRF_TIMER1->CC[0]     = TIMER_COUNT_1MS;
+    271            NRF_TIMER1->INTENSET  = TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos;
+    272            
+    273            /* Enable TIMER1 interrupt */
+    274            NVIC_SetPriority(TIMER1_IRQn, 0);
+    275            //NVIC_EnableIRQ(TIMER1_IRQn);
+    276            
+    277            /* Start timer */
+    278            NRF_TIMER1->TASKS_START = 1;
+    279          
+    280            
+    281          } /* end SysTickSetup() */
+    282          
+    283          
+    284          /*----------------------------------------------------------------------------------------------------------------------
+    285          Function: SystemSleep
+    286          
+    287          Description:
+    288          Puts the system into sleep mode. 
+    289          
+    290          TBD
+    291          
+    292          Requires:
+    293            - TBD
+    294          
+    295          Promises:
+    296            - Configures processor for maximum sleep while still allowing any required
+    297              interrupt to wake it up.
+    298          */
+    299          void SystemSleep(void)
+    300          {    
+    301            /* Set the system control register for Sleep (but not Deep Sleep) */
+    302             
+    303             /* Set the sleep flag (cleared only in SysTick ISR */
+    304             G_u32SystemFlags |= _SYSTEM_SLEEPING;
+    305          
+    306             while(NRF_TIMER1->EVENTS_COMPARE[0] == 0);
+    307             NRF_TIMER1->EVENTS_COMPARE[0] = 0;
+    308             
+    309            /* Now sleep until an event wakes us up */
+    310             //while(G_u32SystemFlags & _SYSTEM_SLEEPING)
+    311             {
+    312             }
+    313          
+    314            /* Clear the sleep mode status flags */
+    315              
+    316          } /* end SystemSleep(void) */
+    317          
+    318          
+    319          
+    320          
+    321          /*--------------------------------------------------------------------------------------------------------------------*/
+    322          /* End of File */
+    323          /*--------------------------------------------------------------------------------------------------------------------*/
+    324          
+    325          
+    326          
+
+Errors: 8
+Warnings: none

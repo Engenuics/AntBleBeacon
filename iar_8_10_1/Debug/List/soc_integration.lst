@@ -1,0 +1,211 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       29/Jun/2018  00:30:11
+# Copyright 1999-2017 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  D:\EiE\EiE Git\AntBleBeacon\bsp\soc_integration.c
+#    Command line =  
+#        -f C:\Users\ENGENU~1\AppData\Local\Temp\EW5D20.tmp ("D:\EiE\EiE
+#        Git\AntBleBeacon\bsp\soc_integration.c" -D NRF51 -lC "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\Debug\List" -o "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files\IAR
+#        Systems\EWARM_8_10_1\arm\INC\c\DLib_Config_Normal.h" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\bsp\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\application\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\s310\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\ble_services\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\device_manager\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\app_common\"
+#        -On --require_prototypes -I "C:\Program Files\IAR
+#        Systems\EWARM_8_10_1\arm\CMSIS\Include\")
+#    Locale       =  C
+#    List file    =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\Debug\List\soc_integration.lst
+#    Object file  =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\Debug\Obj\soc_integration.o
+#
+###############################################################################
+
+D:\EiE\EiE Git\AntBleBeacon\bsp\soc_integration.c
+      1          /**********************************************************************************************************************
+      2          File: soc_integration.c                                                                
+      3          
+      4          Description:
+      5          This is a soc_integration .c file new source code
+      6          **********************************************************************************************************************/
+      7          
+      8          #include "configuration.h"
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                  ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                                    ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                                                      ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+  void LedOn(LedNumberType eLED_);
+             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",76  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedOff(LedNumberType eLED_);
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",77  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedToggle(LedNumberType eLED_);
+                 ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",78  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedPWM(LedNumberType eLED_, LedRateType ePwmRate_);
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",79  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedBlink(LedNumberType eLED_, LedRateType ePwmRate_);
+                ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",80  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+      9          
+     10          /***********************************************************************************************************************
+     11          Global variable definitions with scope across entire project.
+     12          All Global variable names shall start with "G_"
+     13          ***********************************************************************************************************************/
+     14          /* New variables */
+     15          volatile u32 G_u32SocIntegrationFlags;                 /* Global state flags */
+     16          
+     17          
+     18          /*--------------------------------------------------------------------------------------------------------------------*/
+     19          /* Existing variables (defined in other files -- should all contain the "extern" keyword) */
+     20          extern volatile u32 G_u32SystemFlags;                  /* From main.c */
+     21          extern volatile u32 G_u32SystemTime1ms;                /* From board-specific source file */
+     22          extern volatile u32 G_u32SystemTime1s;                 /* From board-specific source file */
+     23          
+     24          
+     25          /***********************************************************************************************************************
+     26          Global variable definitions with scope limited to this local application.
+     27          Variable names shall start with "SocInt_" and be declared as static.
+     28          ***********************************************************************************************************************/
+     29          //static u32 SocInt_u32Timeout;                      /* Timeout counter used across states */
+     30          
+     31          
+     32          
+     33          /**********************************************************************************************************************
+     34          Function Definitions
+     35          **********************************************************************************************************************/
+     36          /*--------------------------------------------------------------------------------------------------------------------*/
+     37          /* Public functions                                                                                                   */
+     38          /*--------------------------------------------------------------------------------------------------------------------*/
+     39          
+     40          
+     41          /*--------------------------------------------------------------------------------------------------------------------*/
+     42          /* Protected functions                                                                                                */
+     43          /*--------------------------------------------------------------------------------------------------------------------*/
+     44          
+     45          /*----------------------------------------------------------------------------------------------------------------------
+     46          Function: SocIntegrationInitialize
+     47          
+     48          Description:
+     49          Initializes the SoftDevice to use the Protocol Stacks. Enables the SD_EVT_IRQ to allow forwarding of Protocol Interrupts to the
+     50          application.
+     51          
+     52          Requires:
+     53            - Called once during initialization.
+     54          
+     55          Promises:
+     56            - Returns TRUE if SoftDevice enabled successfully.
+     57            - Returns FALSE if SoftDevice enabling failed.
+     58          */
+     59          bool SocIntegrationInitialize(void)
+     60          {
+     61            uint32_t result = NRF_SUCCESS;
+     62            
+     63            result |= sd_softdevice_enable(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, SocSoftdeviceAssertCallback);
+     64            return result == NRF_SUCCESS;
+     65          }
+     66          
+     67          
+     68          /*----------------------------------------------------------------------------------------------------------------------
+     69          Function: SocIntegrationHandler
+     70          
+     71          Description:
+     72          This is the global event checker for Protocol Events. It is called continuously from main(). It checks if the 
+     73          _SYSTEM_PROTOCOL_EVENT is set. If so, it calls the dispatchers for the protocol event handlers.
+     74          
+     75          Requires:
+     76            - SoftDevice is enabled
+     77            - BLE and ANT have been initialized
+     78            - Application is running
+     79          
+     80          Promises:
+     81            - Proper dispatching of Protocol events to its handlers
+     82            - Clears the _SYSTEM_PROTOCOL_EVENT system flag
+     83          */
+     84          void SocIntegrationHandler(void)
+     85          {
+     86            // Check if pending event.
+     87            if (G_u32SystemFlags & _SYSTEM_PROTOCOL_EVENT)
+     88            {
+     89              // Clear pending event and process protocol events.
+     90              G_u32SystemFlags &= ~_SYSTEM_PROTOCOL_EVENT;
+     91              ANTIntegrationHandler();
+     92              BLEIntegrationHandler();
+     93            }
+     94          }
+     95          
+     96          /*--------------------------------------------------------------------------------------------------------------------*/
+     97          /* Private functions                                                                                                  */
+     98          /*--------------------------------------------------------------------------------------------------------------------*/
+     99          
+    100          /*----------------------------------------------------------------------------------------------------------------------
+    101          Function: SocIntegrationHandler
+    102          
+    103          Description:
+    104          Assertion handler from the Softdevice.
+    105          
+    106          Requires:
+    107            - None
+    108          
+    109          Promises:
+    110            - Halts the system.
+    111            - Provides the PC counter, Line Num and the FileName in the SoftDevice Code that caused the assertion.
+    112          */
+    113          void SocSoftdeviceAssertCallback(uint32_t ulPC, uint16_t usLineNum, const uint8_t *pucFileName)
+    114          {
+    115             while (1);
+    116          }
+    117          
+    118          
+    119          
+    120          
+    121          /*--------------------------------------------------------------------------------------------------------------------*/
+    122          /* End of File                                                                                                        */
+    123          /*--------------------------------------------------------------------------------------------------------------------*/
+
+Errors: 8
+Warnings: none

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>abbcn-SD3-SDK6_1/Debug</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>346</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+    <Build><ColumnWidth0>26</ColumnWidth0><ColumnWidth1>1871</ColumnWidth1><ColumnWidth2>499</ColumnWidth2><ColumnWidth3>124</ColumnWidth3></Build><Find-in-Files><ColumnWidth0>761</ColumnWidth0><ColumnWidth1>126</ColumnWidth1><ColumnWidth2>1142</ColumnWidth2><ColumnWidth3>507</ColumnWidth3></Find-in-Files></Static>
+    <Windows>
+      
+    <Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-18121-12730</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>abbcn-SD3-SDK6_1</ExpandedNode><ExpandedNode>abbcn-SD3-SDK6_1/Application</ExpandedNode><ExpandedNode>abbcn-SD3-SDK6_1/Application/Include</ExpandedNode><ExpandedNode>abbcn-SD3-SDK6_1/Application/Source</ExpandedNode><ExpandedNode>abbcn-SD3-SDK6_1/_BSP</ExpandedNode><ExpandedNode>abbcn-SD3-SDK6_1/_BSP/Include</ExpandedNode><ExpandedNode>abbcn-SD3-SDK6_1/_BSP/Source</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1><Wnd0><Tabs><Tab><Identity>TabID-14357-13824</Identity><TabName>Build</TabName><Factory>Build</Factory><Session/></Tab><Tab><Identity>TabID-6599-16221</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd0></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>36</YPos2><SelStart2>3124</SelStart2><SelEnd2>3124</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\bsp\abbcn-ehdw-01.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>259</SelStart2><SelEnd2>259</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\bsp\buttons_nrf51_standard.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>24</YPos2><SelStart2>2635</SelStart2><SelEnd2>2649</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\bsp\interrupts.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>136</YPos2><SelStart2>5416</SelStart2><SelEnd2>5416</SelEnd2></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\typedefs.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>48</YPos2><SelStart2>2610</SelStart2><SelEnd2>2624</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>714</SelStart2><SelEnd2>714</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\bsp\abbcn-ehdw-01.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>381</YPos2><SelStart2>7837</SelStart2><SelEnd2>7837</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\bsp\buttons_nrf51_standard.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>275</YPos2><SelStart2>11419</SelStart2><SelEnd2>11419</SelEnd2></Tab><ActiveTab>2</ActiveTab></Pane><Sizes><Pane><X>436586</X><Y>1000000</Y></Pane><Pane><X>563413</X><Y>1000000</Y></Pane></Sizes><SplitMode>4</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-01018358><key>iaridepm.enu1</key></Toolbar-01018358></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>920</Bottom><Right>437</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>78125</sizeHorzCX><sizeHorzCY>153374</sizeHorzCY><sizeVertCX>171484</sizeVertCX><sizeVertCY>707055</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>339</Bottom><Right>2562</Right><x>-2</x><y>-2</y><xscreen>2564</xscreen><yscreen>341</yscreen><sizeHorzCX>1001562</sizeHorzCX><sizeHorzCY>261503</sizeHorzCY><sizeVertCX>78125</sizeVertCX><sizeVertCY>153374</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

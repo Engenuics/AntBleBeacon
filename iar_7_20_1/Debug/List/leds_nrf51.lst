@@ -1,0 +1,1033 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.20.1.7305/W32 for ARM        29/Jun/2018  10:17:53
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c
+#    Command line =  
+#        "D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c" -D NRF51 -lC
+#        "D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\Debug\List\" -o "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files\IAR
+#        Systems\EWARM_7_20_1\arm\INC\c\DLib_Config_Normal.h" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\bsp\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\application\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\s310\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\ble\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\ble\ble_services\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\ble\device_manager\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\app_common\"
+#        -On --require_prototypes -I "C:\Program Files\IAR
+#        Systems\EWARM_7_20_1\arm\CMSIS\Include\"
+#    List file    =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\Debug\List\leds_nrf51.lst
+#    Object file  =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\Debug\Obj\leds_nrf51.o
+#
+###############################################################################
+
+D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c
+      1          /*!**********************************************************************************************************************
+      2          @file leds_nrf51.c                                                                
+      3          @brief LED driver that provides on, off, toggle, blink and PWM functionality.
+      4          
+      5          The basic on/off/toggle functionality is applied directly to the LEDs.
+      6          Blinking and PWMing of LEDs rely on a 1ms system tick to provide timing at
+      7          regular 1ms calls to LedUpdate().
+      8          
+      9          This driver relies on a standard LED 
+     10          
+     11          ------------------------------------------------------------------------------------------------------------------------
+     12          GLOBALS
+     13          - NONE
+     14          
+     15          CONSTANTS
+     16          - NONE
+     17          
+     18          TYPES
+     19          - LedNameType (devboard-specific)
+     20          
+     21           (from eief1-pcb-01):
+     22           {WHITE, PURPLE, BLUE, CYAN, 
+     23            GREEN, YELLOW, ORANGE, RED, 
+     24            LCD_RED, LCD_GREEN, LCD_BLUE}
+     25          
+     26          - LedRateType:
+     27            {LED_0HZ = 0, LED_0_5HZ = 1000, LED_1HZ = 500, LED_2HZ = 250, LED_4HZ = 125, LED_8HZ = 63,
+     28             LED_PWM_0 = 0,   LED_PWM_5 = 1,   LED_PWM_10 = 2,  LED_PWM_15 = 3,  LED_PWM_20 = 4, 
+     29             LED_PWM_25 = 5,  LED_PWM_30 = 6,  LED_PWM_35 = 7,  LED_PWM_40 = 8,  LED_PWM_45 = 9, 
+     30             LED_PWM_50 = 10, LED_PWM_55 = 11, LED_PWM_60 = 12, LED_PWM_65 = 13, LED_PWM_70 = 14, 
+     31             LED_PWM_75 = 15, LED_PWM_80 = 16, LED_PWM_85 = 17, LED_PWM_90 = 18, LED_PWM_95 = 19, 
+     32             LED_PWM_100 = 20} 
+     33          
+     34          PUBLIC FUNCTIONS
+     35          - void LedOn(LedNameType eLED_)
+     36          - void LedOff(LedNameType eLED_)
+     37          - void LedToggle(LedNameType eLED_)
+     38          - void LedBlink(LedNameType eLED_, LedRateType eBlinkRate_)
+     39          - void LedPWM(LedNameType eLED_, LedRateType ePwmRate_)
+     40          
+     41          PROTECTED FUNCTIONS
+     42          - void LedInitialize(void)
+     43          - void LedRunActiveState(void)
+     44          
+     45          DISCLAIMER: THIS CODE IS PROVIDED WITHOUT ANY WARRANTY OR GUARANTEES.  USERS MAY
+     46          USE THIS CODE FOR DEVELOPMENT AND EXAMPLE PURPOSES ONLY.  ENGENUICS TECHNOLOGIES
+     47          INCORPORATED IS NOT RESPONSIBLE FOR ANY ERRORS, OMISSIONS, OR DAMAGES THAT COULD
+     48          RESULT FROM USING THIS FIRMWARE IN WHOLE OR IN PART.
+     49          ***********************************************************************************************************************/
+     50          
+     51          #include "configuration.h"
+     52          
+     53          
+     54          /***********************************************************************************************************************
+     55          Global variable definitions with scope across entire project.
+     56          All Global variable names shall start with "G_xxLed"
+     57          ***********************************************************************************************************************/
+     58          /*--------------------------------------------------------------------------------------------------------------------*/
+     59          /* New variables (all shall start with G_xxLed*/
+     60          
+     61          
+     62          /*--------------------------------------------------------------------------------------------------------------------*/
+     63          /* External global variables defined in other files (must indicate which file they are defined in) */
+     64          extern volatile u32 G_u32SystemTime1ms;                /*!< @brief From main.c */
+     65          extern volatile u32 G_u32SystemTime1s;                 /*!< @brief From main.c */
+     66          extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c */
+     67          
+     68          extern const Nrf51PinConfigurationType G_asBspLedConfigurations[U8_TOTAL_LEDS]; /*!< @brief from board-specific file */
+     69          
+     70          
+     71          /***********************************************************************************************************************
+     72          Global variable definitions with scope limited to this local application.
+     73          Variable names shall start with "Led_" and be declared as static.
+     74          ***********************************************************************************************************************/
+     75          static fnCode_type Led_StateMachine;                   /*!< @brief The state machine function pointer */
+     76          
+     77          static LedControlType Led_asControl[U8_TOTAL_LEDS];    /*!< @brief Holds individual control parameters for LEDs */
+     78          
+     79          
+     80          #if 0
+     81          /* Control array for all LEDs in system initialized for LedInitialize().  Array values correspond to LedConfigType fields: 
+     82               eMode         eRate      u16Count       eCurrentDuty     eActiveState     ePort      LedNameType */
+     83          static LedConfigType Leds_asLedArray[TOTAL_LEDS] = 
+     84          {
+     85           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE7       */
+     86           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN7      */
+     87           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED2        */
+     88           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED3        */
+     89           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED4        */
+     90           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED5        */
+     91           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED7        */
+     92           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED0        */
+     93           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED6        */
+     94           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* RED1        */
+     95           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE1       */
+     96           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE0       */
+     97           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN0      */
+     98           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN1      */
+     99           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE2       */
+    100           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN2      */
+    101           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE3       */
+    102           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN3      */
+    103           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE4       */
+    104           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN4      */
+    105           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE5       */
+    106           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN5      */
+    107           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* BLUE6       */
+    108           {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, LED_ACTIVE_HIGH}, /* GREEN6      */
+    109          };   
+    110          #endif 
+    111          
+    112          /***********************************************************************************************************************
+    113          * Function Definitions
+    114          ***********************************************************************************************************************/
+    115          
+    116          /*--------------------------------------------------------------------------------------------------------------------*/
+    117          /* Public functions */
+    118          /*--------------------------------------------------------------------------------------------------------------------*/
+    119          
+    120          /*!----------------------------------------------------------------------------------------------------------------------
+    121          @fn void LedOn(LedNameType eLED_)
+    122          
+    123          @brief Turn the specified LED on.  
+    124          
+    125          This function automatically takes care of the active low vs. active high LEDs.
+    126          The function works immediately (it does not require the main application
+    127          loop to be running). 
+    128          
+    129          Currently it only supports one LED at a time.
+    130          
+    131          Example:
+    132          
+    133          LedOn(BLUE);
+    134          
+    135          
+    136          Requires:
+    137          - Definitions in G_asBspLedConfigurations[eLED_] and Led_asControl[eLED_] are correct
+    138          
+    139          @param eLED_ is a valid LED index
+    140          
+    141          Promises:
+    142          - eLED_ is turned on 
+    143          - eLED_ is set to LED_NORMAL_MODE mode
+    144          
+    145          */
+    146          void LedOn(LedNameType eLED_)
+    147          {
+    148          
+    149            if(G_asBspLedConfigurations[eLED_].eActiveState == LED_ACTIVE_HIGH)
+                                                                      ^
+Error[Pe020]: identifier "LED_ACTIVE_HIGH" is undefined
+    150            {
+    151              NRF_GPIO->OUTSET = G_asBspLedConfigurations[eLED_].u32BitPosition;
+    152            }
+    153            else
+    154            {
+    155              NRF_GPIO->OUTCLR = G_asBspLedConfigurations[eLED_].u32BitPosition;
+    156            }
+    157            
+    158            /* Always set the LED back to LED_NORMAL_MODE mode */
+    159          	Leds_asLedArray[(u8)eLED_].eMode = LED_NORMAL_MODE;
+                 	^
+Error[Pe020]: identifier "Leds_asLedArray" is undefined
+    160          
+    161          } /* end LedOn() */
+    162          
+    163          
+    164          /*!----------------------------------------------------------------------------------------------------------------------
+    165          @fn void LedOff(LedNameType eLED_)
+    166          
+    167          @brief Turn the specified LED off.
+    168          
+    169          This function automatically takes care of the active low vs. active high LEDs.
+    170          It works immediately (it does not require the main application
+    171          loop to be running). 
+    172          
+    173          Currently it only supports one LED at a time.
+    174          
+    175          Example:
+    176          
+    177          LedOff(BLUE);
+    178          
+    179          
+    180          Requires:
+    181          - Definitions in G_asBspLedConfigurations[eLED_] and Led_asControl[eLED_] are correct
+    182          
+    183          @param eLED_ is a valid LED index
+    184          
+    185          Promises:
+    186          - eLED_ is turned off 
+    187          - eLED_ is set to LED_NORMAL_MODE mode
+    188          
+    189          */
+    190          void LedOff(LedNameType eLED_)
+    191          {
+    192            if(G_asBspLedConfigurations[eLED_].eActiveState == LED_ACTIVE_HIGH)
+                                                                      ^
+Error[Pe020]: identifier "LED_ACTIVE_HIGH" is undefined
+    193            {
+    194              NRF_GPIO->OUTCLR = G_asBspLedConfigurations[eLED_].u32BitPosition;
+    195            }
+    196            else
+    197            {
+    198              NRF_GPIO->OUTSET = G_asBspLedConfigurations[eLED_].u32BitPosition;
+    199            }
+    200            
+    201            /* Always set the LED back to LED_NORMAL_MODE mode */
+    202          	Leds_asLedArray[(u8)eLED_].eMode = LED_NORMAL_MODE;
+                 	^
+Error[Pe020]: identifier "Leds_asLedArray" is undefined
+    203            
+    204          } /* end LedOff() */
+    205          
+    206          
+    207          /*!----------------------------------------------------------------------------------------------------------------------
+    208          @fn void LedToggle(LedNameType eLED_)
+    209          
+    210          @brief Toggles the specified LED from on to off or vise-versa.
+    211          
+    212          This function automatically takes care of the active low vs. active high LEDs.
+    213          It works immediately (it does not require the main application
+    214          loop to be running). 
+    215          
+    216          Currently it only supports one LED at a time.
+    217          
+    218          Example:
+    219          
+    220          LedToggle(BLUE);
+    221          
+    222          
+    223          Requires:
+    224          @param eLED_ is a valid LED index
+    225          
+    226          Promises:
+    227          - eLED_ is toggled 
+    228          - eLED_ is set to LED_NORMAL_MODE
+    229          
+    230          */
+    231          void LedToggle(LedNameType eLED_)
+    232          {
+    233            u32 u32Current_Leds;
+    234            
+    235            u32Current_Leds = NRF_GPIO->IN;
+    236            u32Current_Leds ^= G_asBspLedConfigurations[(u8)eLED_].u32BitPosition;
+    237            NRF_GPIO->OUT = u32Current_Leds;
+    238                                                      
+    239          } /* end LedToggle() */
+    240          
+    241          
+    242          /*----------------------------------------------------------------------------------------------------------------------
+    243          Function: LedPWM
+    244          
+    245          Description:
+    246          Sets an LED to PWM mode
+    247          
+    248          Requires:
+    249            - eLED_ is a valid LED index
+    250            - ePwmRate_ is an allowed duty cycle:
+    251              LED_PWM_0, LED_PWM_5, LED_PWM_10, ..., LED_PWM_95, LED_PWM_100
+    252          
+    253          Promises:
+    254            - Requested LED is set to PWM mode at the duty cycle specified
+    255          */
+    256          void LedPWM(LedNameType eLED_, LedRateType ePwmRate_)
+    257          {
+    258          	Leds_asLedArray[(u8)eLED_].eMode = LED_PWM_MODE;
+                 	^
+Error[Pe020]: identifier "Leds_asLedArray" is undefined
+    259          	Leds_asLedArray[(u8)eLED_].eRate = ePwmRate_;
+    260          	Leds_asLedArray[(u8)eLED_].u16Count = (u16)ePwmRate_;
+    261            Leds_asLedArray[(u8)eLED_].eCurrentDuty = LED_PWM_DUTY_HIGH;
+    262          
+    263          } /* end LedPWM() */
+    264          
+    265          
+    266          /*----------------------------------------------------------------------------------------------------------------------
+    267          Function: LedBlink
+    268          
+    269          Description:
+    270          Sets an LED to BLINK mode.
+    271          
+    272          Requires:
+    273            - eLED_ is a valid LED index
+    274            - eBlinkRate_ is an allowed frequency:
+    275              LED_0_5HZ, LED_1HZ, LED_2HZ, LED_4HZ, LED_8HZ
+    276          
+    277          Promises:
+    278            - Requested LED is set to BLINK mode at the rate specified
+    279          */
+    280          void LedBlink(LedNameType eLED_, LedRateType eBlinkRate_)
+    281          {
+    282          	Leds_asLedArray[(u8)eLED_].eMode = LED_BLINK_MODE;
+                 	^
+Error[Pe020]: identifier "Leds_asLedArray" is undefined
+    283          	Leds_asLedArray[(u8)eLED_].eRate = eBlinkRate_;
+    284          	Leds_asLedArray[(u8)eLED_].u16Count = eBlinkRate_;
+    285          
+    286          } /* end LedBlink() */
+    287          
+    288          
+    289          /*--------------------------------------------------------------------------------------------------------------------*/
+    290          /* Protected functions */
+    291          /*--------------------------------------------------------------------------------------------------------------------*/
+    292          
+    293          /*----------------------------------------------------------------------------------------------------------------------
+    294          Function: LedInitialize
+    295          
+    296          Description:
+    297          Initialization of LED system paramters and visual LED check.
+    298          
+    299          Requires:
+    300            - G_u32SystemTime1ms ticking
+    301            - All LEDs already initialized to LED_NORMAL_MODE mode ON
+    302          
+    303          Promises:
+    304            - All LEDs in LED_NORMAL_MODE mode with OFF
+    305          */
+    306          void LedInitialize(void)
+    307          {
+    308            u32 u32Timer;
+    309            LedNameType aeLedSequence[] = {RED0, RED1, RED2, RED3, RED4, RED5, RED6, RED7,
+    310                                             GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                    ^
+Error[Pe020]: identifier "GREEN0" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN1" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                     ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN2" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN3" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                                     ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN4" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                                             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN5" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                                                     ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN6" is undefined
+
+                                     GREEN0, GREEN1, GREEN2, GREEN3, GREEN4, GREEN5, GREEN6, GREEN7,
+                                                                                             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",310  Error[Pe020]: identifier
+          "GREEN7" is undefined
+    311                                             BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                    ^
+Error[Pe020]: identifier "BLUE0" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                            ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE1" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                   ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE2" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                          ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE3" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                                 ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE4" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                                        ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE5" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                                               ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE6" is undefined
+
+                                     BLUE0, BLUE1, BLUE2, BLUE3, BLUE4, BLUE5, BLUE6, BLUE7};
+                                                                                      ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",311  Error[Pe020]: identifier
+          "BLUE7" is undefined
+    312          
+    313            /* Static Display of all colors */
+    314            LedOn(RED0);
+    315            LedOn(GREEN0);
+    316            LedOn(BLUE0);
+    317            
+    318            LedOn(RED1);
+    319            LedOn(BLUE1);
+    320            
+    321            LedOn(BLUE2);
+    322          
+    323            LedOn(GREEN3);
+    324            LedOn(BLUE3);
+    325          
+    326            LedOn(GREEN4);
+    327            
+    328            LedOn(GREEN5);
+    329            LedOn(RED5);
+    330            
+    331            LedOn(RED6);
+    332          
+    333            LedOn(RED7);
+    334            //LedOn(GREEN7);
+    335            //LedOn(BLUE7);
+    336            
+    337            while(1);
+    338            /* end of static display */
+    339          
+    340            
+    341            while(1)
+                   ^
+Warning[Pe128]: loop is not reachable
+    342          #if 0
+    343            {
+    344              /* Sequentially light up a specific color of LEDs */
+    345              for(u8 k = 0; k < 3; k++)
+    346              {
+    347                for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    348                {
+    349                  LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * k)]);
+    350                  for(u32 j = 0; j < 200000; j++);
+    351                }
+    352                
+    353                /* Pause for show */
+    354                for(u32 i = 0; i < 500000; i++);
+    355          
+    356                /* Turn off the current LEDs */
+    357                for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    358                {
+    359                  LedOff(aeLedSequence[i + (8 * k)]);
+    360                }
+    361              }
+    362          #endif
+    363          
+    364          #if 0 /* one-way sequence */
+    365            {
+    366              /* Red */
+    367              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    368              {
+    369                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    370                for(u32 j = 0; j < STEP_TIME; j++);
+    371              }    
+    372          
+    373              /* Pause for show */
+    374              for(u32 i = 0; i < PAUSE_TIME; i++);
+    375          
+    376              /* All off */
+    377              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    378              {
+    379                LedOff(aeLedSequence[i + (8 * 0)]);
+    380                LedOff(aeLedSequence[i + (8 * 1)]);
+    381                LedOff(aeLedSequence[i + (8 * 2)]);
+    382              }
+    383          
+    384              /* Yellow */
+    385              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    386              {
+    387                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    388                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    389                for(u32 j = 0; j < STEP_TIME; j++);
+    390              }    
+    391          
+    392              /* Pause for show */
+    393              for(u32 i = 0; i < PAUSE_TIME; i++);
+    394          
+    395              /* All off */
+    396              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    397              {
+    398                LedOff(aeLedSequence[i + (8 * 0)]);
+    399                LedOff(aeLedSequence[i + (8 * 1)]);
+    400                LedOff(aeLedSequence[i + (8 * 2)]);
+    401              }
+    402          
+    403              /* Green */
+    404              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    405              {
+    406                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    407                for(u32 j = 0; j < STEP_TIME; j++);
+    408              }    
+    409          
+    410              /* Pause for show */
+    411              for(u32 i = 0; i < PAUSE_TIME; i++);
+    412          
+    413              /* All off */
+    414              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    415              {
+    416                LedOff(aeLedSequence[i + (8 * 0)]);
+    417                LedOff(aeLedSequence[i + (8 * 1)]);
+    418                LedOff(aeLedSequence[i + (8 * 2)]);
+    419              }
+    420          
+    421              /* Cyan */
+    422              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    423              {
+    424                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    425                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    426                for(u32 j = 0; j < STEP_TIME; j++);
+    427              }    
+    428          
+    429              /* Pause for show */
+    430              for(u32 i = 0; i < PAUSE_TIME; i++);
+    431          
+    432              /* All off */
+    433              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    434              {
+    435                LedOff(aeLedSequence[i + (8 * 0)]);
+    436                LedOff(aeLedSequence[i + (8 * 1)]);
+    437                LedOff(aeLedSequence[i + (8 * 2)]);
+    438              }
+    439          
+    440              /* Blue */
+    441              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    442              {
+    443                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    444                for(u32 j = 0; j < STEP_TIME; j++);
+    445              }    
+    446          
+    447              /* Pause for show */
+    448              for(u32 i = 0; i < PAUSE_TIME; i++);
+    449          
+    450              /* All off */
+    451              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    452              {
+    453                LedOff(aeLedSequence[i + (8 * 0)]);
+    454                LedOff(aeLedSequence[i + (8 * 1)]);
+    455                LedOff(aeLedSequence[i + (8 * 2)]);
+    456              }
+    457          
+    458              
+    459              /* Purple */
+    460              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    461              {
+    462                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    463                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    464                for(u32 j = 0; j < STEP_TIME; j++);
+    465              }    
+    466          
+    467              /* Pause for show */
+    468              for(u32 i = 0; i < PAUSE_TIME; i++);
+    469          
+    470              /* All off */
+    471              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    472              {
+    473                LedOff(aeLedSequence[i + (8 * 0)]);
+    474                LedOff(aeLedSequence[i + (8 * 1)]);
+    475                LedOff(aeLedSequence[i + (8 * 2)]);
+    476              }
+    477          
+    478              /* White */
+    479              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    480              {
+    481                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    482                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    483                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    484                for(u32 j = 0; j < STEP_TIME; j++);
+    485              }    
+    486          
+    487              /* Pause for show */
+    488              for(u32 i = 0; i < PAUSE_TIME; i++);
+    489          
+    490              /* All off */
+    491              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    492              {
+    493                LedOff(aeLedSequence[i + (8 * 0)]);
+    494                LedOff(aeLedSequence[i + (8 * 1)]);
+    495                LedOff(aeLedSequence[i + (8 * 2)]);
+    496              }
+    497          
+    498            }
+    499          #endif
+    500            
+    501            
+    502            {
+    503              /* Red */
+    504              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    505              {
+    506                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    507                for(u32 j = 0; j < STEP_TIME; j++);
+    508              }    
+    509          
+    510              for(u32 j = 0; j < STEP_TIME; j++);
+    511          
+    512              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    513              {
+    514                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 0)]);
+    515                for(u32 j = 0; j < STEP_TIME; j++);
+    516              }    
+    517          
+    518              /* Yellow */
+    519              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    520              {
+    521                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    522                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    523                for(u32 j = 0; j < STEP_TIME; j++);
+    524              }    
+    525          
+    526              for(u32 j = 0; j < STEP_TIME; j++);
+    527          
+    528              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    529              {
+    530                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 0)]);
+    531                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 1)]);
+    532                for(u32 j = 0; j < STEP_TIME; j++);
+    533              }    
+    534          
+    535              /* Green */
+    536              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    537              {
+    538                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    539                for(u32 j = 0; j < STEP_TIME; j++);
+    540              }    
+    541          
+    542              for(u32 j = 0; j < STEP_TIME; j++);
+    543          
+    544              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    545              {
+    546                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 1)]);
+    547                for(u32 j = 0; j < STEP_TIME; j++);
+    548              }    
+    549          
+    550              /* Cyan */
+    551              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    552              {
+    553                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    554                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    555                for(u32 j = 0; j < STEP_TIME; j++);
+    556              }    
+    557          
+    558              for(u32 j = 0; j < STEP_TIME; j++);
+    559          
+    560              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    561              {
+    562                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 1)]);
+    563                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 2)]);
+    564                for(u32 j = 0; j < STEP_TIME; j++);
+    565              }    
+    566          
+    567              /* Blue */
+    568              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    569              {
+    570                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    571                for(u32 j = 0; j < STEP_TIME; j++);
+    572              }    
+    573          
+    574              for(u32 j = 0; j < STEP_TIME; j++);
+    575          
+    576             for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    577              {
+    578                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 2)]);
+    579                for(u32 j = 0; j < STEP_TIME; j++);
+    580              }    
+    581          
+    582              /* Purple */
+    583              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    584              {
+    585                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    586                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    587                for(u32 j = 0; j < STEP_TIME; j++);
+    588              }    
+    589          
+    590              for(u32 j = 0; j < STEP_TIME; j++);
+    591          
+    592              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    593              {
+    594                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 0)]);
+    595                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 2)]);
+    596                for(u32 j = 0; j < STEP_TIME; j++);
+    597              }    
+    598          
+    599              /* While */
+    600              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    601              {
+    602                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    603                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 1)]);
+    604                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 2)]);
+    605                for(u32 j = 0; j < STEP_TIME; j++);
+    606              }    
+    607          
+    608              for(u32 j = 0; j < STEP_TIME; j++);
+    609          
+    610              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    611              {
+    612                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 0)]);
+    613                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 1)]);
+    614                LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 2)]);
+    615                for(u32 j = 0; j < STEP_TIME; j++);
+    616              }    
+    617          
+    618          
+    619          
+    620            }
+    621          #if 0
+    622            {
+    623              /* Red */
+    624              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    625              {
+    626                LedOn(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    627                for(u32 j = 0; j < STEP_TIME; j++);
+    628                LedOff(aeLedSequence[i + (NUM_LEDS_PER_COLOR * 0)]);
+    629              }    
+    630          
+    631              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+    632              {
+    633                LedOn(aeLedSequence[(7 - i) + (NUM_LEDS_PER_COLOR * 0)]);
+    634                for(u32 j = 0; j < STEP_TIME; j++);
+    635                LedOff(aeLedSequence[(7 - i) + (NUM_LEDS_PER_COLOR * 0)]);
+    636              }    
+    637          
+    638            }
+    639          #endif
+    640            
+    641            /* Finish with all white */
+    642              for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
+                     ^
+Warning[Pe128]: loop is not reachable
+
+    u32 u32Timer;
+        ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",308  Warning[Pe177]: variable
+          "u32Timer" was declared but never referenced
+    643              {
+    644                LedOn(aeLedSequence[i]);
+    645                LedOn(aeLedSequence[i + NUM_LEDS_PER_COLOR]);
+    646                LedOn(aeLedSequence[i + (2 * NUM_LEDS_PER_COLOR)]);
+    647                for(u32 j = 0; j < 100000; j++);
+    648              }
+    649          
+    650              /* Pause for show */
+    651            for(u32 i = 0; i < 2000000; i++);
+    652          
+    653          #if 0
+    654            /* Turn all LEDs on full, then fade them out over a few seconds */
+    655            for(u8 i = 20; i > 0; i--)
+    656            {
+    657              
+    658              /* Spend 40ms in each level of intensity */
+    659              for(u16 j = 40; j > 0; j--)
+    660              {
+    661                u32Timer = G_u32SystemTime1ms;
+    662                while( !IsTimeUp(&u32Timer, 1) );
+    663                LedUpdate();
+    664              }
+    665              /* Pause for a bit on the first iteration to show the LEDs on for little while */
+    666              if(i == 20)
+    667              {
+    668                while( !IsTimeUp(&u32Timer, 1500) );
+    669              }
+    670              
+    671              /* Set the LED intensity for the next iteration */
+    672              for(u8 j = 0; j < TOTAL_LEDS; j++)
+    673              {
+    674                Leds_asLedArray[j].eRate = (LedRateType)(i - 1);
+    675              }
+    676            }
+    677          
+    678            /* Final update to set last state, hold for a short period */
+    679            LedUpdate();
+    680            while( !IsTimeUp(&u32Timer, 200) );
+    681          #endif
+    682            
+    683          } /* end LedInitialize() */
+    684          
+    685          
+    686          /*!----------------------------------------------------------------------------------------------------------------------
+    687          @fn void LedRunActiveState(void)
+    688          
+    689          @brief Selects and runs one iteration of the current state in the state machine.
+    690          
+    691          All state machines have a TOTAL of 1ms to execute, so on average n state machines
+    692          may take 1ms / n to execute.
+    693          
+    694          Requires:
+    695          - State machine function pointer points at current state
+    696          
+    697          Promises:
+    698          - Calls the function to pointed by the state machine function pointer
+    699          
+    700          */
+    701          void LedRunActiveState(void)
+                      ^
+Error[Pa045]: function "LedRunActiveState" has no prototype
+    702          {
+    703            Led_StateMachine();
+    704          
+    705          } /* end LedRunActiveState */
+    706          
+    707          
+    708          /*--------------------------------------------------------------------------------------------------------------------*/
+    709          /* Private functions */
+    710          /*--------------------------------------------------------------------------------------------------------------------*/
+    711          
+    712          /*----------------------------------------------------------------------------------------------------------------------
+    713          Function: LedUpdate
+    714          
+    715          Description:
+    716          Update all LEDs for the current cycle.
+    717          
+    718          Requires:
+    719           - G_u32SystemTime1ms is counting
+    720          
+    721          Promises:
+    722             - All LEDs updated based on their counters
+    723          */
+    724          void LedUpdate(void)
+    725          {
+    726          	/* Loop through each LED */
+    727            for(u8 i = 0; i < TOTAL_LEDS; i++)
+    728            {
+    729              /* Check if LED is PWMing */
+    730              if(Leds_asLedArray[(LedNameType)i].eMode == LED_PWM_MODE)
+                        ^
+Error[Pe020]: identifier "Leds_asLedArray" is undefined
+    731              {
+    732                /* Handle special case of 0% duty cycle */
+    733                if( Leds_asLedArray[i].eRate == LED_PWM_0 )
+    734                {
+    735                  LedOff( (LedNameType)i );
+    736                }
+    737                
+    738                /* Handle special case of 100% duty cycle */
+    739                else if( Leds_asLedArray[i].eRate == LED_PWM_100 )
+    740                {
+    741                  LedOn( (LedNameType)i );
+    742                }
+    743            
+    744                /* Otherwise, regular PWM: decrement counter; toggle and reload if counter reaches 0 */
+    745                else
+    746                {
+    747                  if(--Leds_asLedArray[(LedNameType)i].u16Count == 0)
+    748                  {
+    749                    if(Leds_asLedArray[(LedNameType)i].eCurrentDuty == LED_PWM_DUTY_HIGH)
+    750                    {
+    751                      /* Turn the LED off and update the counters for the next cycle */
+    752                      LedOff( (LedNameType)i );
+    753                      Leds_asLedArray[(LedNameType)i].u16Count = LED_PWM_PERIOD - Leds_asLedArray[(LedNameType)i].eRate;
+                                                                        ^
+Error[Pe020]: identifier "LED_PWM_PERIOD" is undefined
+    754                      Leds_asLedArray[(LedNameType)i].eCurrentDuty = LED_PWM_DUTY_LOW;
+    755                    }
+    756                    else
+    757                    {
+    758                      /* Turn the LED on and update the counters for the next cycle */
+    759                      LedOn( (LedNameType)i );
+    760                      Leds_asLedArray[i].u16Count = Leds_asLedArray[i].eRate;
+    761                      Leds_asLedArray[i].eCurrentDuty = LED_PWM_DUTY_HIGH;
+    762                    }
+    763                  }
+    764                }
+    765          
+    766                /* Set the LED back to PWM mode since LedOff and LedOn set it to normal mode */
+    767               	Leds_asLedArray[(LedNameType)i].eMode = LED_PWM_MODE;
+    768                
+    769              } /* end if PWM mode */
+    770              
+    771              /* LED is in LED_BLINK_MODE mode */
+    772              else if(Leds_asLedArray[(LedNameType)i].eMode == LED_BLINK_MODE)
+    773              {
+    774                /* Decrement counter; toggle and reload if counter reaches 0 */
+    775                if( --Leds_asLedArray[(LedNameType)i].u16Count == 0)
+    776                {
+    777                  LedToggle( (LedNameType)i );
+    778                  Leds_asLedArray[(LedNameType)i].u16Count = Leds_asLedArray[(LedNameType)i].eRate;
+    779                }
+    780              }
+    781            } /* end for */
+    782          } /* end LedUpdate() */
+    783          
+    784          
+    785          /***********************************************************************************************************************
+    786          State Machine Declarations
+    787          ***********************************************************************************************************************/
+    788          
+    789          /*!-------------------------------------------------------------------------------------------------------------------
+    790          @fn static void LedSM_Idle(void)
+    791          
+    792          @brief Run through all the LEDs to check for blinking updates.
+    793          */
+    794          static void LedSM_Idle(void)
+    795          {
+    796            u32 u32Current;
+    797            
+    798          	/* Loop through each LED to check for blinkers */
+    799            for(u8 i = 0; i < U8_TOTAL_LEDS; i++)
+    800            {
+    801              /* Check if LED is in LED_BLINK_MODE */
+    802              if(Led_asControl[(LedNameType)i].eMode == LED_BLINK_MODE)
+    803              {
+    804                /* Decrement counter and check for 0 */
+    805                Led_asControl[(LedNameType)i].u16Count--;
+    806                if( Led_asControl[(LedNameType)i].u16Count == 0)
+    807                {
+    808                  /* Toggle based on current state */
+    809                  if(NRF_GPIO->IN & Led_asControl[(LedNameType)i].u32BitPosition)
+                                                                         ^
+Error[Pe136]: struct "<unnamed>" has no field "u32BitPosition"
+
+    u32 u32Current;
+        ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",796  Warning[Pe177]: variable
+          "u32Current" was declared but never referenced
+
+  static void LedSM_Idle(void)
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.c",794  Warning[Pe177]: function
+          "LedSM_Idle" was declared but never referenced
+    810                  {
+    811                    NRF_GPIO->OUTCLR = G_asBspLedConfigurations[i].u32BitPosition;
+    812                  }
+    813                  else
+    814                  {
+    815                    NRF_GPIO->OUTSET = G_asBspLedConfigurations[i].u32BitPosition;
+    816                  }
+    817                  
+    818                  /* Reload the blink counter value */
+    819                  Led_asControl[(LedNameType)i].u16Count = Led_asControl[(LedNameType)i].eRate;
+    820                }
+    821              } /* end LED_BLINK_MODE */
+    822              
+    823              /* Check if LED is in LED_PWM_MODE */
+    824              if(Led_asControl[(LedNameType)i].eMode == LED_PWM_MODE)
+    825              {
+    826                /* Handle special case of 0% duty cycle */
+    827                if( Led_asControl[i].eRate == LED_PWM_0 )
+    828                {
+    829                  LedOff( (LedNameType)i );
+    830                }
+    831                
+    832                /* Handle special case of 100% duty cycle */
+    833                else if( Led_asControl[i].eRate == LED_PWM_100 )
+    834                {
+    835                  LedOn( (LedNameType)i );
+    836                }
+    837            
+    838                /* Otherwise, regular PWM: decrement counter; toggle and reload if counter reaches 0 */
+    839                else
+    840                {
+    841                  Led_asControl[(LedNameType)i].u16Count--;
+    842                  if(Led_asControl[(LedNameType)i].u16Count == 0)
+    843                  {
+    844                    if(Led_asControl[(LedNameType)i].eCurrentDuty == LED_PWM_DUTY_HIGH)
+    845                    {
+    846                      /* Turn the LED off and update the counters for the next cycle */
+    847                      LedOff( (LedNameType)i );
+    848                      Led_asControl[(LedNameType)i].u16Count = LED_PWM_100 - Led_asControl[(LedNameType)i].eRate;
+    849                      Led_asControl[(LedNameType)i].eCurrentDuty = LED_PWM_DUTY_LOW;
+    850                    }
+    851                    else
+    852                    {
+    853                      /* Turn the LED on and update the counters for the next cycle */
+    854                      LedOn( (LedNameType)i );
+    855                      Led_asControl[i].u16Count = Led_asControl[i].eRate;
+    856                      Led_asControl[i].eCurrentDuty = LED_PWM_DUTY_HIGH;
+    857                    }
+    858                  }
+    859                }
+    860          
+    861                /* Set the LED back to PWM mode since LedOff and LedOn set it to normal mode */
+    862               	Led_asControl[(LedNameType)i].eMode = LED_PWM_MODE;
+    863                
+    864              } /* end LED_PWM_MODE */
+    865              
+    866            } /* end for(u8 i = 0; i < U8_TOTAL_LEDS; i++) */
+    867             
+    868          } /* end LedSM_Idle() */
+    869          
+    870          
+    871          
+    872          
+    873          /*--------------------------------------------------------------------------------------------------------------------*/
+    874          /* End of File */
+    875          /*--------------------------------------------------------------------------------------------------------------------*/
+    876          
+    877          
+
+Errors: 26
+Warnings: 5

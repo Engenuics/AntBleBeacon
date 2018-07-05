@@ -1,0 +1,407 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.10.1.12857/W32 for ARM       29/Jun/2018  00:30:10
+# Copyright 1999-2017 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  D:\EiE\EiE Git\AntBleBeacon\bsp\bleperipheral.c
+#    Command line =  
+#        -f C:\Users\ENGENU~1\AppData\Local\Temp\EW59FD.tmp ("D:\EiE\EiE
+#        Git\AntBleBeacon\bsp\bleperipheral.c" -D NRF51 -lC "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\Debug\List" -o "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\Debug\Obj" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files\IAR
+#        Systems\EWARM_8_10_1\arm\INC\c\DLib_Config_Normal.h" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\bsp\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\application\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\s310\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\ble_services\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\ble\device_manager\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_8_10_1\..\nordic_sdk6_1_0\Include\app_common\"
+#        -On --require_prototypes -I "C:\Program Files\IAR
+#        Systems\EWARM_8_10_1\arm\CMSIS\Include\")
+#    Locale       =  C
+#    List file    =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\Debug\List\bleperipheral.lst
+#    Object file  =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\Debug\Obj\bleperipheral.o
+#
+###############################################################################
+
+D:\EiE\EiE Git\AntBleBeacon\bsp\bleperipheral.c
+      1          /**********************************************************************************************************************
+      2          File: bleperipheral.c                                                                
+      3          
+      4          Description:
+      5          This is a bleperipheral .c file new source code
+      6          **********************************************************************************************************************/
+      7          
+      8          #include "configuration.h"
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                  ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                                    ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+                GPIOE_TASK0  = 0, GPIOE_TASK0  = 1, GPIOE_TASK0  = 2, GPIOE_TASK0  = 3, 
+                                                                      ^
+"D:\EiE\EiE Git\AntBleBeacon\application\typedefs.h",65  Error[Pe101]: 
+          "GPIOE_TASK0" has already been declared in the current scope (at line
+          65)
+
+  void LedOn(LedNumberType eLED_);
+             ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",76  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedOff(LedNumberType eLED_);
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",77  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedToggle(LedNumberType eLED_);
+                 ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",78  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedPWM(LedNumberType eLED_, LedRateType ePwmRate_);
+              ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",79  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+
+  void LedBlink(LedNumberType eLED_, LedRateType ePwmRate_);
+                ^
+"D:\EiE\EiE Git\AntBleBeacon\bsp\leds_nrf51.h",80  Error[Pe020]: identifier
+          "LedNumberType" is undefined
+      9          
+     10          /***********************************************************************************************************************
+     11          Global variable definitions with scope across entire project.
+     12          All Global variable names shall start with "G_"
+     13          ***********************************************************************************************************************/
+     14          /* New variables */
+     15          volatile u32 G_u32BLEPeripheralFlags;                 /* Global state flags */
+     16          
+     17          
+     18          /*--------------------------------------------------------------------------------------------------------------------*/
+     19          /* Existing variables (defined in other files -- should all contain the "extern" keyword) */
+     20          extern volatile u32 G_u32SystemTime1ms;                /*!< @brief From main.c */
+     21          extern volatile u32 G_u32SystemTime1s;                 /*!< @brief From main.c */
+     22          extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c */
+     23          
+     24          
+     25          /***********************************************************************************************************************
+     26          Global variable definitions with scope limited to this local application.
+     27          Variable names shall start with "SocInt_" and be declared as static.
+     28          ***********************************************************************************************************************/
+     29          //static u32 bleperipheral_u32Timeout;                      /* Timeout counter used across states */
+     30          static ble_gap_adv_params_t             m_adv_params;                                /**< Parameters to be passed to the stack when starting advertising. */
+     31          static ble_gap_sec_params_t             m_sec_params;                                /**< Security requirements for this application. */
+     32          static uint16_t                         m_conn_handle = BLE_CONN_HANDLE_INVALID;     /**< Handle of the current connection. */
+     33          
+     34          
+     35          /**********************************************************************************************************************
+     36          Function Definitions
+     37          **********************************************************************************************************************/
+     38          /*--------------------------------------------------------------------------------------------------------------------*/
+     39          /* Public functions                                                                                                   */
+     40          /*--------------------------------------------------------------------------------------------------------------------*/
+     41          
+     42          /*--------------------------------------------------------------------------------------------------------------------*/
+     43          /* Protected functions                                                                                                */
+     44          /*--------------------------------------------------------------------------------------------------------------------*/
+     45          /*----------------------------------------------------------------------------------------------------------------------
+     46          Function: bleperipheralInitialize
+     47          
+     48          Description:
+     49          Initializes the GAP and GATT layers services for the system. Starts the GAP Advertising.
+     50          
+     51          Requires:
+     52            - None
+     53          
+     54          Promises:
+     55            - Returns TRUE if all sub-systems are successfully activated.
+     56            - Returns FALSE if a sub-system failed and was not activated successfully.
+     57          */
+     58          bool bleperipheralInitialize(void)
+     59          {
+     60            bool bResult = false;
+     61          
+     62            // Set up all the base services for the peripheral mode.
+     63            bResult |= bleperipheral_gap_params_init();
+     64            bResult |= bleperipheral_advertising_init();
+     65            bResult |= bleperipheral_services_init();
+     66            bleperipheral_sec_params_init();
+     67            bResult |= bleperipheral_advertising_start();
+     68            
+     69            return bResult;
+     70          }
+     71          
+     72          
+     73          /*----------------------------------------------------------------------------------------------------------------------
+     74          Function: blePeripheralEventHandler(ble_evt*)
+     75          
+     76          Description:
+     77          The Event handler which handles the various GATT and GAP events received from the SoftDevice once BLE Services have been activated.
+     78          
+     79          Requires:
+     80            - ble_evt_t*: Pointer to the single buffer holding the current ble_evt_t from the SoftDevice.
+     81          
+     82          Promises:
+     83            - Decodes the ble_evt_t and handles message accordingly.
+     84            - Returns TRUE if ble_evt_t decoded and action taken.
+     85            - Returns FALSE if ble_evt_t decoded and action failed.
+     86          */
+     87          bool bleperipheralEventHandler(ble_evt_t* p_ble_evt)
+     88          {
+     89              u32 u32ErrorCode = NRF_SUCCESS;
+     90              
+     91              switch (p_ble_evt->header.evt_id)
+     92              {
+     93                case BLE_GAP_EVT_CONNECTED:
+     94                  m_conn_handle = p_ble_evt->evt.gap_evt.conn_handle;
+     95                  BPEngenuicsOnConnect(p_ble_evt);
+     96                  break;
+     97          
+     98                case BLE_GAP_EVT_DISCONNECTED:
+     99                  m_conn_handle = BLE_CONN_HANDLE_INVALID;
+    100                  BPEngenuicsOnDisconnect();
+    101                  bleperipheral_advertising_start();
+    102                  break;
+    103          
+    104                case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
+    105                  u32ErrorCode = sd_ble_gap_sec_params_reply(m_conn_handle,
+    106                                                         BLE_GAP_SEC_STATUS_SUCCESS,
+    107                                                         &m_sec_params);
+    108                  break;
+    109          
+    110                case BLE_GAP_EVT_TIMEOUT:
+    111                  break;
+    112          
+    113                case BLE_GATTS_EVT_SYS_ATTR_MISSING:
+    114                  u32ErrorCode = sd_ble_gatts_sys_attr_set(m_conn_handle, NULL, 0);
+    115                  break;
+    116                    
+    117                case BLE_GATTS_EVT_WRITE:
+    118                  BPEngenuicsOnWrite(p_ble_evt);
+    119                  break;
+    120          
+    121                default:
+    122                  // No implementation needed.
+    123                  break;
+    124              }
+    125          
+    126              return (u32ErrorCode == NRF_SUCCESS);
+    127          }
+    128          
+    129          
+    130          /*----------------------------------------------------------------------------------------------------------------------
+    131          Function: bool bleperipheralIsConnectedandEnabled(void)
+    132          
+    133          Description:
+    134          The Event handler which handles the various GATT and GAP events received from the SoftDevice once BLE Services have been activated.
+    135          
+    136          Requires:
+    137            - ble_evt_t*: Pointer to the single buffer holding the current ble_evt_t from the SoftDevice.
+    138          
+    139          Promises:
+    140            - Decodes the ble_evt_t and handles message accordingly.
+    141            - Returns TRUE if ble_evt_t decoded and action taken.
+    142            - Returns FALSE if ble_evt_t decoded and action failed.
+    143          */
+    144          bool bleperipheralIsConnectedandEnabled(void)
+    145          {
+    146             // Check if connected and service enabled on BLE.
+    147             return (m_conn_handle != BLE_CONN_HANDLE_INVALID);
+    148          }
+    149          
+    150          
+    151          /*--------------------------------------------------------------------------------------------------------------------*/
+    152          /* Private functions                                                                                                */
+    153          /*--------------------------------------------------------------------------------------------------------------------*/
+    154          /*----------------------------------------------------------------------------------------------------------------------
+    155          Function: bleperipheral_gap_params_init
+    156          
+    157          Description:
+    158          Initializes the GAP parameters for the device. Sets the device name, sets the device 
+    159          appearance type and defines the peripheral requested rates.
+    160          
+    161          Requires:
+    162            - None
+    163          
+    164          Promises:
+    165            - Returns TRUE if GAP params are successfully completed.
+    166            - Returns FALSE if GAP params are not set successfully.
+    167          */
+    168          static bool bleperipheral_gap_params_init(void)
+    169          {
+    170              u32 u32ErrorCode = NRF_SUCCESS;
+    171              ble_gap_conn_params_t   gap_conn_params;
+    172              ble_gap_conn_sec_mode_t sec_mode;
+    173          
+    174              BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
+    175          
+    176              u32ErrorCode |= sd_ble_gap_device_name_set(&sec_mode, DEVICE_NAME, strlen(DEVICE_NAME));
+    177              u32ErrorCode |= sd_ble_gap_appearance_set(BLEPERIPHERAL_DEVICE_APPEARANCE);
+    178          
+    179              memset(&gap_conn_params, 0, sizeof(gap_conn_params));
+    180              gap_conn_params.min_conn_interval = MIN_CONN_INTERVAL;
+    181              gap_conn_params.max_conn_interval = MAX_CONN_INTERVAL;
+    182              gap_conn_params.slave_latency     = SLAVE_LATENCY;
+    183              gap_conn_params.conn_sup_timeout  = CONN_SUP_TIMEOUT;
+    184          
+    185              u32ErrorCode |= sd_ble_gap_ppcp_set(&gap_conn_params);
+    186              
+    187              return (u32ErrorCode == NRF_SUCCESS);
+    188          }
+    189          
+    190          /*----------------------------------------------------------------------------------------------------------------------
+    191          Function: bleperipheral_advertising_init
+    192          
+    193          Description:
+    194          Initializes the advertising parameters for the device.
+    195          
+    196          Requires:
+    197            - None
+    198          
+    199          Promises:
+    200            - Returns TRUE if advertising params are successfully completed.
+    201            - Returns FALSE if advertising params are not set successfully.
+    202          */
+    203          static bool bleperipheral_advertising_init(void)
+    204          {
+    205              u32 u32ErrorCode = NRF_SUCCESS;
+    206              ble_advdata_t advdata;
+    207              u8 u8Flags = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
+    208          
+    209              ble_uuid_t adv_uuids[] =
+    210              {
+    211                {BLE_UUID_HEART_RATE_SERVICE,         BLE_UUID_TYPE_BLE},
+    212                {BLE_UUID_DEVICE_INFORMATION_SERVICE, BLE_UUID_TYPE_BLE}
+    213              };
+    214          
+    215              // Build and set advertising data
+    216              memset(&advdata, 0, sizeof(advdata));
+    217          
+    218              advdata.name_type               = BLE_ADVDATA_FULL_NAME;
+    219              advdata.include_appearance      = true;
+    220              advdata.flags.size              = sizeof(u8Flags);
+    221              advdata.flags.p_data            = &u8Flags;
+    222              advdata.uuids_complete.uuid_cnt = sizeof(adv_uuids) / sizeof(adv_uuids[0]);
+    223              advdata.uuids_complete.p_uuids  = adv_uuids;
+    224          
+    225              u32ErrorCode |= ble_advdata_set(&advdata, NULL);
+    226          
+    227              // Initialise advertising parameters (used when starting advertising)
+    228              memset(&m_adv_params, 0, sizeof(m_adv_params));
+    229          
+    230              m_adv_params.type        = BLE_GAP_ADV_TYPE_ADV_IND;
+    231              m_adv_params.p_peer_addr = NULL;
+    232              m_adv_params.fp          = BLE_GAP_ADV_FP_ANY;
+    233              m_adv_params.interval    = APP_ADV_INTERVAL;
+    234              m_adv_params.timeout     = APP_ADV_TIMEOUT_IN_SECONDS;
+    235              
+    236              return u32ErrorCode == NRF_SUCCESS;
+    237              
+    238          }
+    239          
+    240          
+    241          /*----------------------------------------------------------------------------------------------------------------------
+    242          Function: bleperipheral_advertising_init
+    243          
+    244          Description:
+    245          Initializes any BLE Peripheral Services.
+    246          
+    247          Requires:
+    248            - None
+    249          
+    250          Promises:
+    251            - Returns TRUE if service initialization successful.
+    252            - Returns FALSE if service initialization fails.
+    253          */
+    254          static bool bleperipheral_services_init(void)
+    255          {
+    256            // Initialize the BPEngenuics service.
+    257            if ( !BPEngenuicsInitialize() )
+    258            {
+    259              return false;
+    260            }
+    261            
+    262            return true;
+    263            
+    264          }
+    265          
+    266          
+    267          /*----------------------------------------------------------------------------------------------------------------------
+    268          Function: bleperipheral_advertising_start
+    269          
+    270          Description:
+    271          Start Advertising
+    272          
+    273          Requires:
+    274            - None
+    275          
+    276          Promises:
+    277            - Returns TRUE if advertising start successful.
+    278            - Returns FALSE if advertising start fails.
+    279          */
+    280          static bool bleperipheral_advertising_start(void)
+    281          {
+    282              u32 u32ErrorCode;
+    283          
+    284              u32ErrorCode = sd_ble_gap_adv_start(&m_adv_params);
+    285              return (u32ErrorCode == NRF_SUCCESS);
+    286          }
+    287          
+    288          
+    289          /*----------------------------------------------------------------------------------------------------------------------
+    290          Function: bleperipheral_sec_params_init
+    291          
+    292          Description:
+    293          Initializes security parameteres.
+    294          
+    295          Requires:
+    296            - None
+    297          
+    298          Promises:
+    299            - None
+    300          */
+    301          static void bleperipheral_sec_params_init(void)
+    302          {
+    303              m_sec_params.timeout      = SEC_PARAM_TIMEOUT;
+    304              m_sec_params.bond         = SEC_PARAM_BOND;
+    305              m_sec_params.mitm         = SEC_PARAM_MITM;
+    306              m_sec_params.io_caps      = SEC_PARAM_IO_CAPABILITIES;
+    307              m_sec_params.oob          = SEC_PARAM_OOB;
+    308              m_sec_params.min_key_size = SEC_PARAM_MIN_KEY_SIZE;
+    309              m_sec_params.max_key_size = SEC_PARAM_MAX_KEY_SIZE;
+    310          }
+    311          
+    312          
+    313          
+    314          
+    315          
+    316          
+    317          /*--------------------------------------------------------------------------------------------------------------------*/
+    318          /* End of File                                                                                                        */
+    319          /*--------------------------------------------------------------------------------------------------------------------*/
+
+Errors: 8
+Warnings: none

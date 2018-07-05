@@ -1,0 +1,182 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.20.1.7305/W32 for ARM        29/Jun/2018  10:17:52
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  D:\EiE\EiE Git\AntBleBeacon\bsp\i2c_master.c
+#    Command line =  
+#        "D:\EiE\EiE Git\AntBleBeacon\bsp\i2c_master.c" -D NRF51 -lC
+#        "D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\Debug\List\" -o "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\Debug\Obj\" --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M0 -e --fpu=None --dlib_config
+#        "C:\Program Files\IAR
+#        Systems\EWARM_7_20_1\arm\INC\c\DLib_Config_Normal.h" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\bsp\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\application\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\" -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\s310\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\ble\" -I
+#        "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\ble\ble_services\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\ble\device_manager\"
+#        -I "D:\EiE\EiE
+#        Git\AntBleBeacon\iar_7_20_1\..\nordic_sdk6_1_0\Include\app_common\"
+#        -On --require_prototypes -I "C:\Program Files\IAR
+#        Systems\EWARM_7_20_1\arm\CMSIS\Include\"
+#    List file    =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\Debug\List\i2c_master.lst
+#    Object file  =  
+#        D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\Debug\Obj\i2c_master.o
+#
+###############################################################################
+
+D:\EiE\EiE Git\AntBleBeacon\bsp\i2c_master.c
+      1          /**********************************************************************************************************************
+      2          File: i2c_master.c                                                                
+      3          
+      4          Description:
+      5          I2C master implementation using I2C master perihperal but not Nordic SDK.
+      6          **********************************************************************************************************************/
+      7          
+      8          #include "configuration.h"
+      9          
+     10          /***********************************************************************************************************************
+     11          Global variable definitions with scope across entire project.
+     12          All Global variable names shall start with "G_xxI2C"
+     13          ***********************************************************************************************************************/
+     14          /* New variables */
+
+   \                                 In section .bss, align 4
+     15          volatile u32 G_u32I2cMasterFlags;                       /* Global state flags */
+   \                     G_u32I2cMasterFlags:
+   \   00000000                      DS8 4
+     16          
+     17          
+     18          /*--------------------------------------------------------------------------------------------------------------------*/
+     19          /* Existing variables (defined in other files -- should all contain the "extern" keyword) */
+     20          extern volatile u32 G_u32SystemTime1ms;                /*!< @brief From main.c */
+     21          extern volatile u32 G_u32SystemTime1s;                 /*!< @brief From main.c */
+     22          extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c */
+     23          
+     24          
+     25          /***********************************************************************************************************************
+     26          Global variable definitions with scope limited to this local application.
+     27          Variable names shall start with "I2cMaster_" and be declared as static.
+     28          ***********************************************************************************************************************/
+     29          static u32 I2cMaster_u32Timeout;                      /* Timeout counter used across states */
+                            ^
+Warning[Pe177]: variable "I2cMaster_u32Timeout" was declared but never
+          referenced
+     30          
+     31          
+     32          /**********************************************************************************************************************
+     33          Function Definitions
+     34          **********************************************************************************************************************/
+     35          
+     36          /*--------------------------------------------------------------------------------------------------------------------*/
+     37          /* Public functions                                                                                                   */
+     38          /*--------------------------------------------------------------------------------------------------------------------*/
+     39          
+     40          /*--------------------------------------------------------------------------------------------------------------------
+     41          Function: I2cMasterTxByte
+     42          
+     43          Description:
+     44          Sends one byte of data to the slave.
+     45          
+     46          Requires:
+     47            - 
+     48          
+     49          Promises:
+     50            - Returns TRUE if slave ACKs sent byte
+     51          */
+     52          
+     53          
+     54          /*--------------------------------------------------------------------------------------------------------------------*/
+     55          /* Protected functions                                                                                                */
+     56          /*--------------------------------------------------------------------------------------------------------------------*/
+     57          
+     58          /*--------------------------------------------------------------------------------------------------------------------
+     59          Function: I2cMasterInitialize
+     60          
+     61          Description:
+     62          Initializes the State Machine and its variables.
+     63          
+     64          Requires:
+     65            -
+     66          
+     67          Promises:
+     68            - 
+     69          */
+
+   \                                 In section .text, align 2, keep-with-next
+     70          void I2cMasterInitialize(void)
+     71          {
+     72          #if 0
+     73            /* Set up I²C-specific GPIO */
+     74            NRF_GPIO->PIN_CNF[ANT_SPI_MOSI_BIT] = P0_13_ANT_SPI_MOSI_CNF;
+     75            NRF_GPIO->PIN_CNF[ANT_SPI_MISO_BIT] = P0_12_ANT_SPI_MISO_CNF;
+     76            NRF_GPIO->PIN_CNF[ANT_SPI_SCK_BIT]  = P0_11_ANT_SPI_SCK_CNF;
+     77            NRF_GPIO->PIN_CNF[ANT_SEN_BIT]      = P0_10_ANT_SEN_CNF;
+     78          
+     79            NRF_SPI0->PSELMOSI = P0_13_ANT_SPI_MOSI_INDEX;
+     80            NRF_SPI0->PSELMISO = P0_12_ANT_SPI_MISO_INDEX;  
+     81            NRF_SPI0->PSELSCK  = P0_11_ANT_SPI_SCK_INDEX;
+     82          
+     83            /* Set up SPI Master peripheral */
+     84            NRF_SPI0->FREQUENCY = SPI_FREQUENCY_FREQUENCY_M1 << SPI_FREQUENCY_FREQUENCY_Pos;
+     85            NRF_SPI0->CONFIG   = (SPI_CONFIG_ORDER_MsbFirst << SPI_CONFIG_ORDER_Pos | \
+     86                                  SPI_CONFIG_CPHA_Leading   << SPI_CONFIG_CPHA_Pos  | \
+     87                                  SPI_CONFIG_CPOL_ActiveLow << SPI_CONFIG_CPOL_Pos );
+     88          #endif
+     89            /* Configure SPI driver */
+     90            
+     91            
+     92            /* Activate SPI peripheral */
+     93          
+     94          } /* end I2cMasterInitialize() */
+   \                     I2cMasterInitialize: (+1)
+   \   00000000   0x4770             BX       LR               ;; return
+     95          
+     96          
+     97          
+     98          /*--------------------------------------------------------------------------------------------------------------------*/
+     99          /* Private functions                                                                                                  */
+    100          /*--------------------------------------------------------------------------------------------------------------------*/
+    101          
+    102          
+    103          
+    104          
+    105          /*--------------------------------------------------------------------------------------------------------------------*/
+    106          /* End of File                                                                                                        */
+    107          /*--------------------------------------------------------------------------------------------------------------------*/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   I2cMasterInitialize
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  G_u32I2cMasterFlags
+       2  I2cMasterInitialize
+
+ 
+ 4 bytes in section .bss
+ 2 bytes in section .text
+ 
+ 2 bytes of CODE memory
+ 4 bytes of DATA memory
+
+Errors: none
+Warnings: 1
