@@ -77,12 +77,14 @@ void main(void)
   /* Driver initialization */
   LedInitialize();
   ButtonInitialize();
+  // I2cInitialize();
 
   ANTIntegrationInitialize();
   BLEIntegrationInitialize();
   bleperipheralInitialize();
   
   /* Application initialization */
+  //AccelInitialize();
   //PovInitialize();
   
   /* Exit initialization */
@@ -96,7 +98,9 @@ void main(void)
     /* Driver and Application State Machines */
     LedRunActiveState();
     ButtonRunActiveState();
+    //I2cRunActiveState();
    
+    //AccelRunActiveState();
     //PovRunActiveState();
 
     SystemSleep();

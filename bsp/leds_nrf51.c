@@ -330,8 +330,8 @@ void LedInitialize(void)
   LedOn(RED6);
 
   LedOn(RED7);
-  //LedOn(GREEN7);
-  //LedOn(BLUE7);
+  LedOn(GRN7);
+  LedOn(BLU7);
   
   while(1);
   /* end of static display */

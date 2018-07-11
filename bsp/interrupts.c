@@ -164,7 +164,7 @@ void GPIOTE_IRQHandler(void)
     if( (G_asBspButtonConfigurations[i].eChannelNumber != GPIOE_NO_CHANNEL) &&
         (NRF_GPIOTE->EVENTS_IN[G_asBspButtonConfigurations[i].eChannelNumber]) )
     {
-      ButtonStartDebounce(i) ;
+      ButtonStartDebounce(G_asBspButtonConfigurations[i].eChannelNumber) ;
 #if 0
       /* Disable interrupt and clear channel event */
       NRF_GPIOTE->INTENCLR = G_asBspButtonConfigurations[i].u32GpioeChannelBit;
