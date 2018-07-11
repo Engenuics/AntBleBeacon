@@ -28,6 +28,8 @@ extern volatile u32 G_u32SystemTime1ms;                /*!< @brief From main.c *
 extern volatile u32 G_u32SystemTime1s;                 /*!< @brief From main.c */
 extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c */
 
+extern const Nrf51PinConfigurationType G_asBspButtonConfigurations[U8_TOTAL_BUTTONS]; /*!< @brief from board-specific file */
+
 //extern volatile bool G_abButtonDebounceActive[TOTAL_BUTTONS];
 //extern volatile u32 G_au32ButtonDebounceTimeStart[TOTAL_BUTTONS];
 
@@ -162,7 +164,7 @@ void GPIOTE_IRQHandler(void)
     if( (G_asBspButtonConfigurations[i].eChannelNumber != GPIOE_NO_CHANNEL) &&
         (NRF_GPIOTE->EVENTS_IN[G_asBspButtonConfigurations[i].eChannelNumber]) )
     {
-      ButtonStartDebounce(i) 
+      ButtonStartDebounce(i) ;
 #if 0
       /* Disable interrupt and clear channel event */
       NRF_GPIOTE->INTENCLR = G_asBspButtonConfigurations[i].u32GpioeChannelBit;
@@ -170,8 +172,8 @@ void GPIOTE_IRQHandler(void)
 
       Button_asStatus[(u8)eButton].bDebounceActive = TRUE;
       Button_asStatus[(u8)eButton].u32DebounceTimeStart = G_u32SystemTime1ms;
-    }
 #endif
+    }
   } /* end for (i) */
 
 } /* end GPIOTE_IRQHandler() */

@@ -275,14 +275,15 @@ void ButtonRunActiveState(void)
 
 
 /*!----------------------------------------------------------------------------------------------------------------------
-@fn void ButtonStartDebounce(u8 u8ButtonIndex_)
+@fn void ButtonStartDebounce(GpioeChannelType eEventChannel_)
 
 @brief Called only from ISR: sets the "debounce active" flag and debounce start time  
 
 Requires:
 - Only the GPIOE ISR should call this function
 
-@param u32BitPosition_ is a SINGLE bit and actual button location on which to start debouncing
+@param eEventChannel_ is the nRF Event Channel on which the interrupt occurred and 
+therefore should start debouncing
 
 Promises:
 - If the indicated button is found in G_asBspButtonConfigurations, then the

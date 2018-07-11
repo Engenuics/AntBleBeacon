@@ -81,9 +81,9 @@ void LedBlink(LedNameType eLED_, LedRateType ePwmRate_);
 
 /* Protected Functions */
 void LedInitialize(void);
+void LedRunActiveState(void);
 
 /* Private Functions */
-void LedUpdate(void);
 
 
 /******************************************************************************

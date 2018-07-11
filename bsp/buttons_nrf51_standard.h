@@ -58,7 +58,7 @@ bool IsButtonHeld(ButtonNameType eButton_, u32 u32ButtonHeldTime_);
 void ButtonInitialize(void);                        
 void ButtonRunActiveState(void);
 u8 ButtonGetActiveColumn(void);
-void ButtonStartDebounce(u32 u32BitPosition_);
+void ButtonStartDebounce(GpioeChannelType eEventChannel_);
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
