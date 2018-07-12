@@ -30,6 +30,9 @@ typedef enum {RED0 = 0, RED1, RED2, RED3, RED4, RED5, RED6, RED7,
 
 #define U8_TOTAL_LEDS             (u8)24      /*!< @brief Total number of LEDs in the system */
 
+#define U8_LED_COLOR_OFFSET_RED   (u8)0       /*!< @brief Offset between Red and Red in LedNameType */
+#define U8_LED_COLOR_OFFSET_GRN   (u8)8       /*!< @brief Offset between Green and Red in LedNameType */
+#define U8_LED_COLOR_OFFSET_BLU   (u8)16      /*!< @brief Offset between Blue and Red in LedNameType */
 
 /*----------------------------------------------------------------------------------------------------------------------
 %BUTTON% Button Configuration                                                                                                  

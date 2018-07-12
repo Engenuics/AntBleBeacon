@@ -77,38 +77,6 @@ static fnCode_type Led_StateMachine;                   /*!< @brief The state mac
 static LedControlType Led_asControl[U8_TOTAL_LEDS];    /*!< @brief Holds individual control parameters for LEDs */
 
 
-#if 0
-/* Control array for all LEDs in system initialized for LedInitialize().  Array values correspond to LedConfigType fields: 
-     eMode         eRate      u16Count       eCurrentDuty     eActiveState     ePort      LedNameType */
-static LedConfigType Led_asControl[TOTAL_LEDS] = 
-{
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE7       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN7      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED2        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED3        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED4        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED5        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED7        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED0        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED6        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* RED1        */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE1       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE0       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN0      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN1      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE2       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN2      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE3       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN3      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE4       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN4      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE5       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN5      */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* BLUE6       */
- {LED_NORMAL_MODE, LED_PWM_100, LED_PWM_100, LED_PWM_DUTY_HIGH, ACTIVE_HIGH}, /* GREEN6      */
-};   
-#endif 
-
 /***********************************************************************************************************************
 * Function Definitions
 ***********************************************************************************************************************/
@@ -286,6 +254,55 @@ void LedBlink(LedNameType eLED_, LedRateType eBlinkRate_)
 } /* end LedBlink() */
 
 
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn void LedRainbow(void)
+
+@brief Sets a rainbow pattern on the LEDs
+
+Requires:
+- NONE
+
+Promises:
+- LED0 white to LED7 red 
+
+*/
+void LedRainbow(void)
+{
+  LedOn(RED0);
+  LedOn(GRN0);
+  LedOn(BLU0);
+  
+  LedOn(RED1);
+  LedOff(GRN1);
+  LedOn(BLU1);
+  
+  LedOff(RED2);
+  LedOff(GRN2);
+  LedOn(BLU2);
+
+  LedOff(RED3);
+  LedOn(GRN3);
+  LedOn(BLU3);
+
+  LedOff(RED4);
+  LedOn(GRN4);
+  LedOff(BLU4);
+  
+  LedOn(RED5);
+  LedOn(GRN5);
+  LedOff(BLU5);
+ 
+  LedOn(RED6);
+  LedPWM(GRN6, LED_PWM_30);
+  LedOff(BLU6);
+
+  LedOn(RED7);
+  LedOff(GRN7);
+  LedOff(BLU7);
+  
+} /* end LedRainbow() */
+
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions */
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -310,33 +327,13 @@ void LedInitialize(void)
                                  BLU0, BLU1, BLU2, BLU3, BLU4, BLU5, BLU6, BLU7};
 
   /* Static Display of all colors */
-  LedOn(RED0);
-  LedOn(GRN0);
-  LedOn(BLU0);
-  
-  LedOn(RED1);
-  LedOn(BLU1);
-  
-  LedOn(BLU2);
+  LedRainbow();
 
-  LedOn(GRN3);
-  LedOn(BLU3);
-
-  LedOn(GRN4);
   
-  LedOn(GRN5);
-  LedOn(RED5);
-  
-  LedOn(RED6);
-
-  LedOn(RED7);
-  LedOn(GRN7);
-  LedOn(BLU7);
-  
-  while(1);
+  //while(1);
   /* end of static display */
 
-  #if 0
+#if 0
   {
     /* Sequentially light up a specific color of LEDs */
     for(u8 k = 0; k < 3; k++)
@@ -495,7 +492,7 @@ void LedInitialize(void)
   }
 #endif
   
-  
+#if 0  
   {
     /* Red */
     for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
@@ -611,10 +608,9 @@ void LedInitialize(void)
       LedOff(aeLedSequence[7 - i + (NUM_LEDS_PER_COLOR * 2)]);
       for(u32 j = 0; j < STEP_TIME; j++);
     }    
-
-
-
   }
+#endif
+
 #if 0
   {
     /* Red */
@@ -633,7 +629,6 @@ void LedInitialize(void)
     }    
 
   }
-#endif
   
   /* Finish with all white */
     for(u8 i = 0; i < NUM_LEDS_PER_COLOR; i++)
@@ -646,6 +641,7 @@ void LedInitialize(void)
 
     /* Pause for show */
   for(u32 i = 0; i < 2000000; i++);
+#endif
 
 #if 0
   /* Turn all LEDs on full, then fade them out over a few seconds */

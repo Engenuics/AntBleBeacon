@@ -85,7 +85,8 @@ void main(void)
   
   /* Application initialization */
   //AccelInitialize();
-  //PovInitialize();
+  PovInitialize();
+  UserApp1Initialize();
   
   /* Exit initialization */
   G_u32SystemFlags &= ~_SYSTEM_INITIALIZING;
@@ -101,7 +102,8 @@ void main(void)
     //I2cRunActiveState();
    
     //AccelRunActiveState();
-    //PovRunActiveState();
+    PovRunActiveState();
+    UserApp1RunActiveState();
 
     SystemSleep();
     

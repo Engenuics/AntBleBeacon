@@ -80,11 +80,14 @@ Includes
 /* Driver header files */
 #include "buttons_nrf51_standard.h"
 #include "i2c_master.h"
+#include "lcd_bitmaps.h"
 #include "leds_nrf51.h" 
 
 
 /* Application header files */
-//#include "pov.h"
+#include "pov.h"
+#include "user_app1.h"
+
 
 /**********************************************************************************************************************
 !!!!! External device peripheral assignments
