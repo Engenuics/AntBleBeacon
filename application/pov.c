@@ -163,6 +163,10 @@ void PovQueueMessage(u8* pu8Message_)
 
     /* One more index to insert the space between chars */
     u8ScreenIndex++;
+    
+    /* Increment counters */
+    u8CharCounter++;
+    u8CurrentChar++;
 
   } /* end while() */
   
