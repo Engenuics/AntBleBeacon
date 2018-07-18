@@ -16,7 +16,7 @@
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </JLinkDriver>
     <DebugChecksum>
-        <Checksum>3830253248</Checksum>
+        <Checksum>1817293620</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -31,11 +31,9 @@
     <Disassembly>
         <MixedMode>1</MixedMode>
     </Disassembly>
-    <struct_types>
-        <Fmt0>struct &lt;Unnamed 6&gt;-eChannelNumber	4	0</Fmt0>
-        <Fmt1>struct &lt;Unnamed 6&gt;-u32BitPosition	4	0</Fmt1>
-        <Fmt2>struct &lt;Unnamed 6&gt;-u8PinNumber	3	0</Fmt2>
-    </struct_types>
+    <array_types>
+        <Fmt0>u8[96]	4	0</Fmt0>
+    </array_types>
     <Trace1>
         <Enabled>0</Enabled>
         <ShowSource>1</ShowSource>
@@ -44,7 +42,7 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\application\pov.c}.242.3" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\bsp\abbcn-ehdw-01.c}.92.1" 0 0 1 "" 0 "" 0</Bp0>
         <Count>1</Count>
     </Breakpoints2>
     <LogFile>

@@ -53,7 +53,7 @@ static u32 Pov_u16UpdateRate;
 static PovColorType Pov_sMessageColor;  
 static u8 Pov_au8ScreenBitmap[U8_SCREEN_WIDTH_PX];
 
-static u8 cau8DefaultMessage[] = "enGENIUS";
+static u8 Pov_au8DefaultMessage[] = "enGENIUS";
 
 
 /**********************************************************************************************************************
@@ -125,44 +125,53 @@ Promises:
 void PovQueueMessage(u8* pu8Message_)
 {
   u8 u8CharCounter = 0;
-  u8* u8CurrentChar;
+  u8* pu8CurrentChar;
   
   u8 u8BitMask = 0x01;
-  u8 u8ScreenIndex = 0;
+  u8 u8ScreenColumnIndex = 0;
   
-  u8CurrentChar = pu8Message_;
+  pu8CurrentChar = pu8Message_;
   
   /* Clear the current screen */
-  for(u8 i = 0; i < U8_SCREEN_WIDTH_CHARS; i++)
+  for(u8 i = 0; i < U8_SCREEN_WIDTH_PX; i++)
   {
     Pov_au8ScreenBitmap[i] = 0;
   }
   
-  while( (u8CurrentChar != NULL) &&
+  /* Loop through each character in the message and load its bitmap */
+  while( (*pu8CurrentChar != NULL) &&
          (u8CharCounter < U8_SCREEN_CHARS) )
   {
-    u8BitMask = 0x01 << U8_CHAR_WIDTH_PX;
+    /* Start with the left-most column */
+    u8BitMask = 0x01;
+//    u8BitMask = 0x01 << U8_CHAR_WIDTH_PX;
     
-    /* Look up bitmap for the current character and load to Pov_au8ScreenBitmap */
+    /* Load the bitmap column-by-column to Pov_au8ScreenBitmap
+    j controls the bitmask to select the letter's bitmap column */
     for(u8 j = 0; j < U8_CHAR_WIDTH_PX; j++)
     {
-      /* j controls the bitmask to select the letter's bitmap column */
+      /* k indexes each pixel in the current column of the letter */
       for(u8 k = 0; k < U8_FONT_HEIGHT_PX; k++)
       {
-        /* k indexes each pixel in the current column of the letter */
-        if(u8BitMask & (G_aau8SmallFonts[(*u8CurrentChar - U8_ASCII_PRINTABLES)][k][0]) )
+        /* Add the pixel to Pov_au8ScreenBitmap if it is lit in the character bitmap */
+        if(u8BitMask & (G_aau8SmallFonts[(*pu8CurrentChar - U8_ASCII_PRINTABLES)][k][0]) )
         {
-          Pov_au8ScreenBitmap[u8ScreenIndex] |= (0x1 << k);
+          Pov_au8ScreenBitmap[u8ScreenColumnIndex] |= (0x1 << k);
         }
-        
       } /* end for k */
-      u8ScreenIndex++;
-      u8BitMask >>= 1;
+      
+      u8ScreenColumnIndex++;
+//      u8BitMask >>= 1;
+      u8BitMask <<= 1;
       
     } /* end for j */
+    
+    /* Move to next char */
+    pu8CurrentChar++;
+    u8CharCounter++;
 
     /* One more index to insert the space between chars */
-    u8ScreenIndex++;
+    u8ScreenColumnIndex++;
 
   } /* end while() */
   
@@ -239,18 +248,18 @@ Promises:
 */
 void PovInitialize(void)
 {
-  LedRainbow();
+  LedAllOff();
   
-  Pov_sMessageColor.eRed = LED_PWM_100; 
+  Pov_sMessageColor.eRed   = LED_PWM_100; 
   Pov_sMessageColor.eGreen = LED_PWM_0; 
-  Pov_sMessageColor.eBlue = LED_PWM_100; 
+  Pov_sMessageColor.eBlue  = LED_PWM_100; 
   
-  PovQueueMessage(cau8DefaultMessage);
-  
+  PovQueueMessage(Pov_au8DefaultMessage);
+
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-    Pov_pfStateMachine = PovSM_PovDuty;
+    Pov_pfStateMachine = PovSM_Idle;
   }
   else
   {
@@ -354,7 +363,7 @@ static void PovSM_Pov(void)
       }
     } /* end for i */
                 
-    /* Move to next pixel an wrap back if at end */
+    /* Move to next pixel and wrap back if at end */
     u16BitmapIndex++;
     if(u16BitmapIndex == U8_SCREEN_WIDTH_PX)
     {

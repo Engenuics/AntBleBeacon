@@ -75,7 +75,7 @@ Constants / Definitions
 //#define U8_SCREEN_HEIGHT_CHARS (u8)(U8_SCREEN_HEIGHT_PX / 8) /*!< @brief Number of vertical pixels of "screen" */
 #define U8_SCREEN_CHARS        (u8)16        /*!< @brief Number of characters to support on "screen" */
 #define U8_SCREEN_WIDTH_PX     (u8)( (U8_CHAR_WIDTH_PX + U8_SPACE_WIDTH_PX) * U8_SCREEN_CHARS)     /*!< @brief Number of horizontal pixels of "screen" */
-#define U8_SCREEN_WIDTH_CHARS  (u8)( (U8_SCREEN_WIDTH_PX / 8) + 1)    /*!< @brief Number of horizontal pixels of "screen" */
+//#define U8_SCREEN_WIDTH_CHARS  (u8)( (U8_SCREEN_WIDTH_PX / 8) + 1)    /*!< @brief Number of horizontal pixels of "screen" */
 
 #define U16_DEFAULT_TIMING_MS  (u16)250
 

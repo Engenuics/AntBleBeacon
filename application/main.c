@@ -45,43 +45,41 @@ contraints but must complete execution regardless of success or failure of start
 ***********************************************************************************************************************/
 void main(void)
 {
-  G_u32SystemFlags |= _SYSTEM_INITIALIZING;
-  
-  /*
-  Due to the switch that the application makes from the User mode system to SoftDevice
-  mode System, this module sets up the basic clocks and I/Os, followed by enabling the SD.
+#ifdef SOFTDEVICE_ENABLED  
+  /* This must be done before any RAM accesses.
+  Enable the s310 SoftDevice Stack. If Failure, we shall not progress as 
+  successive code is dependent on SD success. 
   Once the SD is enabled, the application shall only use the SD provided system calls
-  */
-  __disable_interrupt();
-
-  /* Clock, GPIO and SoftDevice setup */  
-  ClockSetup();
-  GpioSetup();
-
-  __enable_interrupt();
+  for access to processor resources that are restricted by the SD. */
+  Main_u32ErrorCode = sd_softdevice_enable(NRF_CLOCK_LFCLKSRC_SYNTH_250_PPM, SocSoftdeviceAssertCallback);
   
-  /* Enable the s310 SoftDevice Stack. If Failure, we shall not progress as 
-  successive code is dependent on SD success. */
-  if (!SocIntegrationInitialize())
+  if ( Main_u32ErrorCode != NRF_SUCCESS )
   {
-    /* Lite up all the RED LEDs to indicate this state */
-    NRF_GPIO->OUTSET = (RED0 | RED1 | RED2 | RED3 | RED4 | RED5 | RED6 | RED7);
+    NRF_GPIO->OUTSET = P0_23_RED0 | P0_24_RED7;
     while (1);
   }
+#endif
   
+  G_u32SystemFlags |= _SYSTEM_INITIALIZING;
+
   /* Low Level Initialization Modules */
   WatchDogSetup(); 
+  GpioSetup();
+  ClockSetup();
+  InterruptSetup();
+  PowerSetup();
   SysTickSetup();
-  InterruptsInitialize();
     
   /* Driver initialization */
   LedInitialize();
   ButtonInitialize();
   // I2cInitialize();
 
+#ifdef SOFTDEVICE_ENABLED
   ANTIntegrationInitialize();
   BLEIntegrationInitialize();
   bleperipheralInitialize();
+#endif
   
   /* Application initialization */
   //AccelInitialize();

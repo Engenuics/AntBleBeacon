@@ -255,6 +255,28 @@ void LedBlink(LedNameType eLED_, LedRateType eBlinkRate_)
 
 
 /*!----------------------------------------------------------------------------------------------------------------------
+@fn void LedAllOff(void)
+
+@brief Sets a rainbow pattern on the LEDs
+
+Requires:
+- NONE
+
+Promises:
+- All LEDs off 
+
+*/
+void LedAllOff(void)
+{
+  for(u8 i = 0; i < TOTAL_LEDS; i++)
+  {
+    LedOff( (LedNameType)i );
+  }
+  
+} /* end LedAllOff() */
+
+
+/*!----------------------------------------------------------------------------------------------------------------------
 @fn void LedRainbow(void)
 
 @brief Sets a rainbow pattern on the LEDs
@@ -673,6 +695,10 @@ void LedInitialize(void)
   while( !IsTimeUp(&u32Timer, 200) );
 #endif
 
+  LedBlink(BLU0, LED_1HZ);
+  LedOff(RED0);
+  LedOff(GRN0);
+  
   Led_StateMachine = LedSM_Idle;  
   
 } /* end LedInitialize() */

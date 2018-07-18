@@ -76,8 +76,11 @@ typedef struct
 void LedOn(LedNameType eLED_);
 void LedOff(LedNameType eLED_);
 void LedToggle(LedNameType eLED_);
+
 void LedPWM(LedNameType eLED_, LedRateType ePwmRate_);
 void LedBlink(LedNameType eLED_, LedRateType ePwmRate_);
+
+void LedAllOff(void);
 void LedRainbow(void);
 
 

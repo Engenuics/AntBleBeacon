@@ -82,9 +82,8 @@ the development board does not require and other GPIOE events or tasks. */
 void WatchDogSetup(void);
 void PowerSetup(void);
 void GpioSetup(void);
-void ClockSetup(void);
-void InterruptSetup(void);
-void SysTickSetup(void);
+bool ClockSetup(void);
+bool SysTickSetup(void);
 void SystemSleep(void);
 
 
@@ -102,9 +101,14 @@ $$$$$ PWM setup values
 /***********************************************************************************************************************
 @@@@@ Clock, Systick and Power Control setup values
 ***********************************************************************************************************************/
-#define FOSC                    __SYSTEM_CLOCK    /* Crystal speed from system_nrf51.c */
-#define OSC_STARTUP_TIMOUT      (u32)1000000      /* Timeout for oscillator to start up */
-  
+#define FOSC                      __SYSTEM_CLOCK    /* Crystal speed from system_nrf51.c */
+#define OSC_STARTUP_TIMOUT        (u32)1000000      /* Timeout for oscillator to start up */
+#define LFCLK_FREQ                (u32)32768
+#define HFCLK_FREQ                (u32)16000000
+
+#define RTC_PRESCALE_INIT         (u32)31         /* Set for ~1ms: (32768Hz / 1000Hz) - 1 = 31 */
+
+
 /* Timer 1
 To get roughly a 1ms tick, set the prescale register value to 0 which results in a prescale value of 1.
 Then we can count up to 33 to get a 1.0071ms tick.  That gives 993 for the value to count to for the 1 second tick. */
