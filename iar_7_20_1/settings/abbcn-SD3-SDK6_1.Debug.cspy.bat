@@ -19,6 +19,6 @@
 @REM 
 
 
-"C:\Program Files\IAR Systems\EWARM_7_20_1\common\bin\cspybat" "C:\Program Files\IAR Systems\EWARM_7_20_1\arm\bin\armproc.dll" "C:\Program Files\IAR Systems\EWARM_7_20_1\arm\bin\armjlink.dll"  %1 --plugin "C:\Program Files\IAR Systems\EWARM_7_20_1\arm\bin\armbat.dll" --macro "D:\EiE\EiE Git\AntBleBeacon\iar_7_20_1\..\exec.mac" --backend -B "--endian=little" "--cpu=Cortex-M0" "--drv_vector_table_base=0x0" "--fpu=None" "-p" "C:\Program Files\IAR Systems\EWARM_7_20_1\arm\CONFIG\debugger\NordicSemi\nRF51422-QFAA.ddf" "--semihosting" "--device=nRF51422-QFAA" "--drv_communication=USB0" "--jlink_speed=auto" "--jlink_initial_speed=1000" "--jlink_reset_strategy=0,0" "--jlink_interface=SWD" "--drv_catch_exceptions=0x000" "--drv_swo_clock_setup=72000000,0,2000000" 
+"C:\Program Files (x86)\IAR Systems\EWARM_7_20_1\common\bin\cspybat" "C:\Program Files (x86)\IAR Systems\EWARM_7_20_1\arm\bin\armproc.dll" "C:\Program Files (x86)\IAR Systems\EWARM_7_20_1\arm\bin\armjlink.dll"  %1 --plugin "C:\Program Files (x86)\IAR Systems\EWARM_7_20_1\arm\bin\armbat.dll" --macro "D:\EiE\EiE_Git\AntBleBeacon\iar_7_20_1\..\exec.mac" --backend -B "--endian=little" "--cpu=Cortex-M0" "--drv_vector_table_base=0x0" "--fpu=None" "-p" "C:\Program Files (x86)\IAR Systems\EWARM_7_20_1\arm\CONFIG\debugger\NordicSemi\nRF51422-QFAA.ddf" "--semihosting" "--device=nRF51422-QFAA" "--drv_communication=USB0" "--jlink_speed=auto" "--jlink_initial_speed=1000" "--jlink_reset_strategy=0,0" "--jlink_interface=SWD" "--drv_catch_exceptions=0x000" "--drv_swo_clock_setup=72000000,0,2000000" 
 
 
