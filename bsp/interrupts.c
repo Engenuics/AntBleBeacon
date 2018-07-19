@@ -174,7 +174,9 @@ void RTC1_IRQHandler(void)
   if ((G_u32SystemTime1ms % 1000) == 0)
   {
     G_u32SystemTime1s++;
-    LedToggle(BLU7);
+    
+    /* Optional heartbeat */
+    //LedToggle(RED7);
   }
 
 } /* end RTC1_IRQHandler() */

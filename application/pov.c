@@ -47,7 +47,7 @@ Global variable definitions with scope limited to this local application.
 Variable names shall start with "Pov_<type>" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type Pov_pfStateMachine;               /*!< @brief The state machine function pointer */
-//static u32 Pov_u32Timeout;                           /*!< @brief Timeout counter used across states */
+static u32 Pov_u32Timer;                             /*!< @brief Timeout counter used across states */
 
 static u32 Pov_u16UpdateRate;  
 static PovColorType Pov_sMessageColor;  
@@ -67,13 +67,16 @@ Function Definitions
 /*!----------------------------------------------------------------------------------------------------------------------
 @fn void PovSetTiming(void)
 
-@brief Adjusts the main cycle time on which all 
+@brief Adjusts the main cycle time on which all character display is based.
+
+This function can be hard-coded for a known cycle time, or have a timing input
+based on reed switch, accelerometer, etc.
 
 Requires:
 - 
 
 Promises:
-- 
+- Pov_u16UpdateRate updated for the current timing
 
 */
 void PovSetTiming(void)
@@ -144,7 +147,6 @@ void PovQueueMessage(u8* pu8Message_)
   {
     /* Start with the left-most column */
     u8BitMask = 0x01;
-//    u8BitMask = 0x01 << U8_CHAR_WIDTH_PX;
     
     /* Load the bitmap column-by-column to Pov_au8ScreenBitmap
     j controls the bitmask to select the letter's bitmap column */
@@ -161,7 +163,6 @@ void PovQueueMessage(u8* pu8Message_)
       } /* end for k */
       
       u8ScreenColumnIndex++;
-//      u8BitMask >>= 1;
       u8BitMask <<= 1;
       
     } /* end for j */
@@ -200,25 +201,25 @@ void LedDuty(void)
   LedOff(GRN1);
   LedPWM(BLU1, LED_PWM_15);
   
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_30);
+  LedOn(RED2);
+  LedOff(GRN2);
+  LedPWM(BLU2, LED_PWM_30);
 
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_45);
+  LedOn(RED3);
+  LedOff(GRN3);
+  LedPWM(BLU3, LED_PWM_45);
 
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_60);
+  LedOn(RED4);
+  LedOff(GRN4);
+  LedPWM(BLU4, LED_PWM_60);
   
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_75);
+  LedOn(RED5);
+  LedOff(GRN5);
+  LedPWM(BLU5, LED_PWM_75);
  
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_90);
+  LedOn(RED6);
+  LedOff(GRN6);
+  LedPWM(BLU6, LED_PWM_90);
 
   LedOn(RED7);
   LedOff(GRN7);
@@ -248,7 +249,7 @@ Promises:
 */
 void PovInitialize(void)
 {
-  LedAllOff();
+  LedRainbow();
   
   Pov_sMessageColor.eRed   = LED_PWM_100; 
   Pov_sMessageColor.eGreen = LED_PWM_0; 
