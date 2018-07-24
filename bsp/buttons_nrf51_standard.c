@@ -58,14 +58,6 @@ static fnCode_type Button_pfnStateMachine;                  /* The Button applic
 
 static ButtonStatusType Button_asStatus[U8_TOTAL_BUTTONS];  /*!< @brief Individual status parameters for buttons */
 
-#if 0
-static ButtonStateType Button_aeCurrentState[TOTAL_BUTTONS];/* Current pressed state of button */
-static ButtonStateType Button_aeNewState[TOTAL_BUTTONS];    /* New (pending) pressed state of button */
-static u32 Button_au32HoldTimeStart[TOTAL_BUTTONS];         /* System 1ms time when a button press started */
-static bool Button_abNewPress[TOTAL_BUTTONS];               /* Flags to indicate a button was pressed */    
-static u8 Button_u8ActiveCol;                               /* Current Active Button Column */                                                                                    
-#endif
-
 
 /***********************************************************************************************************************
 Function Definitions

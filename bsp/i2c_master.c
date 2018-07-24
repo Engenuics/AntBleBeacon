@@ -69,27 +69,29 @@ Promises:
 */
 void I2cMasterInitialize(void)
 {
-#if 0
   /* Set up I²C-specific GPIO */
-  NRF_GPIO->PIN_CNF[ANT_SPI_MOSI_BIT] = P0_13_ANT_SPI_MOSI_CNF;
-  NRF_GPIO->PIN_CNF[ANT_SPI_MISO_BIT] = P0_12_ANT_SPI_MISO_CNF;
-  NRF_GPIO->PIN_CNF[ANT_SPI_SCK_BIT]  = P0_11_ANT_SPI_SCK_CNF;
-  NRF_GPIO->PIN_CNF[ANT_SEN_BIT]      = P0_10_ANT_SEN_CNF;
+  NRF_TWI0->PSELSCL = P0_16_INDEX;
+  NRF_TWI0->PSELSDA = P0_15_INDEX;  
 
-  NRF_SPI0->PSELMOSI = P0_13_ANT_SPI_MOSI_INDEX;
-  NRF_SPI0->PSELMISO = P0_12_ANT_SPI_MISO_INDEX;  
-  NRF_SPI0->PSELSCK  = P0_11_ANT_SPI_SCK_INDEX;
+  /* Set up I²C Master peripheral and Interrupts */
+  NRF_TWI0->FREQUENCY = TWI_FREQUENCY_FREQUENCY_K100;
+  NRF_TWI0->INTENSET = 
+  
+  /* Configure driver */
+  
+  
+  /* Activate peripheral and enable interrupts */
+  NRF_TWI0->ENABLE = 0x5;
+  
+#ifdef SOFTDEVICE_ENABLED  
+  /* Must enable the SoftDevice Interrupt first */
+  u32Result |= sd_nvic_SetPriority(SD_EVT_IRQn, NRF_APP_PRIORITY_LOW);
+  u32Result |= sd_nvic_EnableIRQ(SD_EVT_IRQn);
 
-  /* Set up SPI Master peripheral */
-  NRF_SPI0->FREQUENCY = SPI_FREQUENCY_FREQUENCY_M1 << SPI_FREQUENCY_FREQUENCY_Pos;
-  NRF_SPI0->CONFIG   = (SPI_CONFIG_ORDER_MsbFirst << SPI_CONFIG_ORDER_Pos | \
-                        SPI_CONFIG_CPHA_Leading   << SPI_CONFIG_CPHA_Pos  | \
-                        SPI_CONFIG_CPOL_ActiveLow << SPI_CONFIG_CPOL_Pos );
+  /* GPIOE interrupts */
+  u32Result |= sd_nvic_SetPriority(GPIOTE_IRQn, NRF_APP_PRIORITY_LOW);
+  u32Result |= sd_nvic_EnableIRQ(GPIOTE_IRQn);
 #endif
-  /* Configure SPI driver */
-  
-  
-  /* Activate SPI peripheral */
 
 } /* end I2cMasterInitialize() */
 

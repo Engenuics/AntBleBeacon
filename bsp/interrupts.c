@@ -143,7 +143,6 @@ void HardFault_Handler(u32 u32ProgramCounter_, u32 u32LinkRegister_)
   (void)u32LinkRegister_;
 
    /* Red LED on to indicate fault state */
-   //NRF_GPIO->OUTCLR = P0_28_LED_YLW | P0_27_LED_GRN | P0_26_LED_BLU;
    NRF_GPIO->OUTSET = P0_23_RED0 | P0_28_RED2 | P0_26_RED4 | P0_22_RED6;
    
    /* RIP */
