@@ -68,6 +68,8 @@ bool InterruptSetup(void)
   /* GPIOE interrupts */
   u32Result |= sd_nvic_SetPriority(GPIOTE_IRQn, NRF_APP_PRIORITY_LOW);
   u32Result |= sd_nvic_EnableIRQ(GPIOTE_IRQn);
+#else
+  
 #endif
   
   return (u32Result == NRF_SUCCESS);

@@ -28,6 +28,11 @@ Variable names shall start with "I2cMaster_" and be declared as static.
 ***********************************************************************************************************************/
 static u32 I2cMaster_u32Timeout;                      /* Timeout counter used across states */
 
+static bool I2cMaster_bBusy;       
+
+static u8 I2cMaster_u8NumberBytes;       
+static u8* I2cMaster_pu8TransferBytes;   
+
 
 /**********************************************************************************************************************
 Function Definitions
@@ -37,17 +42,18 @@ Function Definitions
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-/*--------------------------------------------------------------------------------------------------------------------
-Function: I2cMasterTxByte
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn bool I2cMasterTx(u8 u8Size_, u8* pu8Data_)
 
-Description:
-Sends one byte of data to the slave.
+@brief Sends u8Size_ bytes starting at pu8Data_ to the Slave.
 
 Requires:
-  - 
+@param u8Size_ is the number of bytes to send
+@param pu8Data_ points to the start of the data
 
 Promises:
-  - Returns TRUE if slave ACKs sent byte
+- Returns TRUE if the transmission is started
+- Returns FALSE if the peripheral is already busy
 */
 
 
@@ -75,25 +81,60 @@ void I2cMasterInitialize(void)
 
   /* Set up I²C Master peripheral and Interrupts */
   NRF_TWI0->FREQUENCY = TWI_FREQUENCY_FREQUENCY_K100;
-  NRF_TWI0->INTENSET = 
+
+  /* Interrupts on STOPPED (event 1), RXDRDY (event 2), and TXDSENT (event 7) */
+  NRF_TWI0->INTENSET  = (1 << 1) || (1 << 2) || (1 << 7);
   
-  /* Configure driver */
-  
-  
-  /* Activate peripheral and enable interrupts */
+  /* Configure driver and enable interrupts */
+  I2cMaster_bBusy = FALSE;
   NRF_TWI0->ENABLE = 0x5;
   
+  
 #ifdef SOFTDEVICE_ENABLED  
-  /* Must enable the SoftDevice Interrupt first */
-  u32Result |= sd_nvic_SetPriority(SD_EVT_IRQn, NRF_APP_PRIORITY_LOW);
-  u32Result |= sd_nvic_EnableIRQ(SD_EVT_IRQn);
-
-  /* GPIOE interrupts */
-  u32Result |= sd_nvic_SetPriority(GPIOTE_IRQn, NRF_APP_PRIORITY_LOW);
-  u32Result |= sd_nvic_EnableIRQ(GPIOTE_IRQn);
+  /* TWI0 interrupts */
+  u32Result |= sd_nvic_SetPriority(SPI0_TWI0_IRQn, NRF_APP_PRIORITY_LOW);
+  u32Result |= sd_nvic_EnableIRQ(SPI0_TWI0_IRQn);
+#else
+  NVIC_SetPriority(SPI0_TWI0_IRQn, NRF_APP_PRIORITY_LOW);
+  NVIC_EnableIRQ(SPI0_TWI0_IRQn);
 #endif
 
 } /* end I2cMasterInitialize() */
+
+
+
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn ISR void TWI0_IRQHandler(void)
+@brief Custom TWI0 ISR for handling TWI transmit, receive and Stop 
+
+Requires:
+
+Promises:
+- G_u32SystemTime1ms is updated; G_u32SystemTime1s incremented every 1000 ticks
+
+*/
+void TWI0_IRQHandler(void)
+{
+  /* Transmit complete event */
+  if(NRF_TWI0->EVENTS_TXDSENT)
+  {
+    /* Clear the event and check if any more bytes need to be sent */
+    NRF_TWI0->EVENTS_TXDSENT = 0;
+    I2cMaster_u8NumberBytes--;
+    if(I2cMaster_u8NumberBytes == 0)
+    {
+      /* If finished, then release the TWI resource */
+      I2cMaster_bBusy = FALSE;
+      I2cMaster_pu8TransferBytes = NULL;
+    }
+    else
+    {
+      /* Load the next byte and advance the pointer */
+      NRF_TWI0->TXD = *I2cMaster_pu8TransferBytes;
+    }
+  }
+
+} /* end TWI0_IRQHandler() */
 
 
 
