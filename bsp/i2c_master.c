@@ -32,6 +32,7 @@ static bool I2cMaster_bBusy;
 
 static u8 I2cMaster_u8NumberBytes;       
 static u8* I2cMaster_pu8TransferBytes;   
+static bool I2cMaster_bStopAfterTransfer;
 
 
 /**********************************************************************************************************************
@@ -43,18 +44,39 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 /*!----------------------------------------------------------------------------------------------------------------------
-@fn bool I2cMasterTx(u8 u8Size_, u8* pu8Data_)
+@fn bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_)
 
 @brief Sends u8Size_ bytes starting at pu8Data_ to the Slave.
 
 Requires:
 @param u8Size_ is the number of bytes to send
 @param pu8Data_ points to the start of the data
+@param bStopAfterTransfer_ is TRUE if STOP condition should be set after transfer
 
 Promises:
 - Returns TRUE if the transmission is started
 - Returns FALSE if the peripheral is already busy
 */
+bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_)
+{
+  /* Exit immediately if peripheral is already busy */
+  if(I2cMaster_bBusy == TRUE)
+  {
+    return FALSE;
+  }
+  
+  /* Mark peripheral busy and set up globals */
+  I2cMaster_bBusy = TRUE;
+  I2cMaster_u8NumberBytes = u8Size_
+  I2cMaster_pu8TransferBytes = pu8Data_;
+  
+  /* Load first byte and start the transfer */
+  NRF_TWI0->TASKS_STARTTX = 1;
+  NRF_TWI0->TXD = *I2cMaster_pu8TransferBytes;
+  
+
+
+} /* end bool I2cMasterTx() */
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -86,9 +108,13 @@ void I2cMasterInitialize(void)
   NRF_TWI0->INTENSET  = (1 << 1) || (1 << 2) || (1 << 7);
   
   /* Configure driver and enable interrupts */
-  I2cMaster_bBusy = FALSE;
+  I2cMaster_u8NumberBytes = 0;
+  I2cMaster_pu8TransferBytes = NULL;
+  I2cMaster_bStopAfterTransfer = TRUE;
+  
   NRF_TWI0->ENABLE = 0x5;
   
+  I2cMaster_bBusy = FALSE;
   
 #ifdef SOFTDEVICE_ENABLED  
   /* TWI0 interrupts */
@@ -110,7 +136,8 @@ void I2cMasterInitialize(void)
 Requires:
 
 Promises:
-- G_u32SystemTime1ms is updated; G_u32SystemTime1s incremented every 1000 ticks
+- TXD_SENT: loads the next byte to send if bytes remain, or 
+            resets I2cMaster_bBusy so another task may use the peripheral
 
 */
 void TWI0_IRQHandler(void)
@@ -123,15 +150,47 @@ void TWI0_IRQHandler(void)
     I2cMaster_u8NumberBytes--;
     if(I2cMaster_u8NumberBytes == 0)
     {
-      /* If finished, then release the TWI resource */
-      I2cMaster_bBusy = FALSE;
-      I2cMaster_pu8TransferBytes = NULL;
+      /* Check for STOP request */
+      if(I2cMaster_bStopAfterTransfer)
+      {
+        NRF_TWI0->TASKS_STOP = 1;
+      }
+      else
+      {
+        /* If no stop, then we are finished, then release the TWI resource */
+        I2cMaster_bBusy = FALSE;
+        I2cMaster_pu8TransferBytes = NULL;
+      }
     }
     else
     {
       /* Load the next byte and advance the pointer */
       NRF_TWI0->TXD = *I2cMaster_pu8TransferBytes;
+      //NRF_TWI0->TASKS_STARTTX = 1;
+      I2cMaster_pu8TransferBytes++;
     }
+  }
+
+  /* Receive complete event */
+  if(NRF_TWI0->EVENTS_RXDRDY)
+  {
+    /* Clear the event */
+    NRF_TWI0->EVENTS_RXDRDY = 0;
+    
+    /* Place the byte into the target receive pointer and advance the pointer */
+    if(I2cMaster_pu8TransferBytes != NULL)
+    {
+      *I2cMaster_pu8TransferBytes = NRF_TWI0->RXD;
+      I2cMaster_pu8TransferBytes++;
+      I2cMaster_u8NumberBytes++;
+    }
+  }
+
+  /* Stop condition event */
+  if(NRF_TWI0->EVENTS_STOPPED)
+  {
+    I2cMaster_bBusy = FALSE;
+    I2cMaster_pu8TransferBytes = NULL;
   }
 
 } /* end TWI0_IRQHandler() */
