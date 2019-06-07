@@ -23,15 +23,15 @@ typedef long s32;
 typedef short s16;
 typedef signed char  s8;
 
-typedef const long sc32;   /*!< Read Only */
+typedef const long sc32;  /*!< Read Only */
 typedef const short sc16;  /*!< Read Only */
-typedef const char sc8;    /*!< Read Only */
+typedef const char sc8;   /*!< Read Only */
 
-typedef ULONG  u32;
-typedef USHORT u16;
-typedef UCHAR  u8;
+typedef uint32_t  u32;
+typedef uint16_t u16;
+typedef uint8_t  u8;
 
-typedef const ULONG uc32;   /*!< Read Only */
+typedef const ULONG uc32;  /*!< Read Only */
 typedef const USHORT uc16;  /*!< Read Only */
 typedef const USHORT uc8;   /*!< Read Only */
 
@@ -39,6 +39,7 @@ typedef void(*fnCode_type)(void);
 typedef void(*fnCode_u16_type)(u16 x);
 
 typedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;
+
 
 /* Redefinition of allowed boolean nmenonics */
 #define FALSE false

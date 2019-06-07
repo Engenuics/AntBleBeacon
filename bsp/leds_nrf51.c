@@ -73,6 +73,7 @@ Global variable definitions with scope limited to this local application.
 Variable names shall start with "Led_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type Led_StateMachine;                   /*!< @brief The state machine function pointer */
+static u32 Led_u32Timer;                               /*!< @brief Timeout counter used across states */
 
 static LedControlType Led_asControl[U8_TOTAL_LEDS];    /*!< @brief Holds individual control parameters for LEDs */
 
@@ -255,6 +256,28 @@ void LedBlink(LedNameType eLED_, LedRateType eBlinkRate_)
 
 
 /*!----------------------------------------------------------------------------------------------------------------------
+@fn void LedAllOff(void)
+
+@brief Sets a rainbow pattern on the LEDs
+
+Requires:
+- NONE
+
+Promises:
+- All LEDs off 
+
+*/
+void LedAllOff(void)
+{
+  for(u8 i = 0; i < TOTAL_LEDS; i++)
+  {
+    LedOff( (LedNameType)i );
+  }
+  
+} /* end LedAllOff() */
+
+
+/*!----------------------------------------------------------------------------------------------------------------------
 @fn void LedRainbow(void)
 
 @brief Sets a rainbow pattern on the LEDs
@@ -328,6 +351,9 @@ void LedInitialize(void)
 
   /* Static Display of all colors */
   LedRainbow();
+  Led_u32Timer = G_u32SystemTime1ms; 
+  while( !IsTimeUp(&Led_u32Timer, 500) );
+  LedAllOff();
 
   
   //while(1);
@@ -673,6 +699,12 @@ void LedInitialize(void)
   while( !IsTimeUp(&u32Timer, 200) );
 #endif
 
+#if 0
+  LedBlink(BLU0, LED_1HZ);
+  LedOff(RED0);
+  LedOff(GRN0);
+#endif
+  
   Led_StateMachine = LedSM_Idle;  
   
 } /* end LedInitialize() */

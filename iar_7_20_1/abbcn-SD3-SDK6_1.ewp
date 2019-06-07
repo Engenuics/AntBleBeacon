@@ -1966,6 +1966,9 @@
         <name>$PROJ_DIR$\..\bsp\utilities.c</name>
       </file>
     </group>
+    <file>
+      <name>$PROJ_DIR$\..\bsp\nRF51422_QFAA.icf</name>
+    </file>
   </group>
   <group>
     <name>_Nordic_SDK_6_1_0</name>
@@ -2050,7 +2053,16 @@
         <name>$PROJ_DIR$\..\application\bleperipheral_engenuics.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\application\lcd_bitmaps.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\application\main.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\application\pov.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\application\user_app1.h</name>
       </file>
     </group>
     <group>
@@ -2059,7 +2071,16 @@
         <name>$PROJ_DIR$\..\application\bleperipheral_engenuics.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\application\lcd_bitmaps.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\application\main.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\application\pov.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\application\user_app1.c</name>
       </file>
     </group>
   </group>

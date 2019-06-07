@@ -47,13 +47,13 @@ Global variable definitions with scope limited to this local application.
 Variable names shall start with "Pov_<type>" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type Pov_pfStateMachine;               /*!< @brief The state machine function pointer */
-//static u32 Pov_u32Timeout;                           /*!< @brief Timeout counter used across states */
+static u32 Pov_u32Timer;                             /*!< @brief Timeout counter used across states */
 
 static u32 Pov_u16UpdateRate;  
 static PovColorType Pov_sMessageColor;  
 static u8 Pov_au8ScreenBitmap[U8_SCREEN_WIDTH_PX];
 
-static u8 cau8DefaultMessage[] = "enGENIUS";
+static u8 Pov_au8DefaultMessage[] = "enGENIUS";
 
 
 /**********************************************************************************************************************
@@ -67,13 +67,16 @@ Function Definitions
 /*!----------------------------------------------------------------------------------------------------------------------
 @fn void PovSetTiming(void)
 
-@brief Adjusts the main cycle time on which all 
+@brief Adjusts the main cycle time on which all character display is based.
+
+This function can be hard-coded for a known cycle time, or have a timing input
+based on reed switch, accelerometer, etc.
 
 Requires:
 - 
 
 Promises:
-- 
+- Pov_u16UpdateRate updated for the current timing
 
 */
 void PovSetTiming(void)
@@ -125,48 +128,51 @@ Promises:
 void PovQueueMessage(u8* pu8Message_)
 {
   u8 u8CharCounter = 0;
-  u8* u8CurrentChar;
+  u8* pu8CurrentChar;
   
   u8 u8BitMask = 0x01;
-  u8 u8ScreenIndex = 0;
+  u8 u8ScreenColumnIndex = 0;
   
-  u8CurrentChar = pu8Message_;
+  pu8CurrentChar = pu8Message_;
   
   /* Clear the current screen */
-  for(u8 i = 0; i < U8_SCREEN_WIDTH_CHARS; i++)
+  for(u8 i = 0; i < U8_SCREEN_WIDTH_PX; i++)
   {
     Pov_au8ScreenBitmap[i] = 0;
   }
   
-  while( (u8CurrentChar != NULL) &&
+  /* Loop through each character in the message and load its bitmap */
+  while( (*pu8CurrentChar != NULL) &&
          (u8CharCounter < U8_SCREEN_CHARS) )
   {
-    u8BitMask = 0x01 << U8_CHAR_WIDTH_PX;
+    /* Start with the left-most column */
+    u8BitMask = 0x01;
     
-    /* Look up bitmap for the current character and load to Pov_au8ScreenBitmap */
+    /* Load the bitmap column-by-column to Pov_au8ScreenBitmap
+    j controls the bitmask to select the letter's bitmap column */
     for(u8 j = 0; j < U8_CHAR_WIDTH_PX; j++)
     {
-      /* j controls the bitmask to select the letter's bitmap column */
+      /* k indexes each pixel in the current column of the letter */
       for(u8 k = 0; k < U8_FONT_HEIGHT_PX; k++)
       {
-        /* k indexes each pixel in the current column of the letter */
-        if(u8BitMask & (G_aau8SmallFonts[(*u8CurrentChar - U8_ASCII_PRINTABLES)][k][0]) )
+        /* Add the pixel to Pov_au8ScreenBitmap if it is lit in the character bitmap */
+        if(u8BitMask & (G_aau8SmallFonts[(*pu8CurrentChar - U8_ASCII_PRINTABLES)][k][0]) )
         {
-          Pov_au8ScreenBitmap[u8ScreenIndex] |= (0x1 << k);
+          Pov_au8ScreenBitmap[u8ScreenColumnIndex] |= (0x1 << k);
         }
-        
       } /* end for k */
-      u8ScreenIndex++;
-      u8BitMask >>= 1;
+      
+      u8ScreenColumnIndex++;
+      u8BitMask <<= 1;
       
     } /* end for j */
+    
+    /* Move to next char */
+    pu8CurrentChar++;
+    u8CharCounter++;
 
     /* One more index to insert the space between chars */
-    u8ScreenIndex++;
-    
-    /* Increment counters */
-    u8CharCounter++;
-    u8CurrentChar++;
+    u8ScreenColumnIndex++;
 
   } /* end while() */
   
@@ -195,25 +201,25 @@ void LedDuty(void)
   LedOff(GRN1);
   LedPWM(BLU1, LED_PWM_15);
   
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_30);
+  LedOn(RED2);
+  LedOff(GRN2);
+  LedPWM(BLU2, LED_PWM_30);
 
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_45);
+  LedOn(RED3);
+  LedOff(GRN3);
+  LedPWM(BLU3, LED_PWM_45);
 
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_60);
+  LedOn(RED4);
+  LedOff(GRN4);
+  LedPWM(BLU4, LED_PWM_60);
   
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_75);
+  LedOn(RED5);
+  LedOff(GRN5);
+  LedPWM(BLU5, LED_PWM_75);
  
-  LedOn(RED1);
-  LedOff(GRN1);
-  LedPWM(BLU1, LED_PWM_90);
+  LedOn(RED6);
+  LedOff(GRN6);
+  LedPWM(BLU6, LED_PWM_90);
 
   LedOn(RED7);
   LedOff(GRN7);
@@ -245,16 +251,16 @@ void PovInitialize(void)
 {
   LedRainbow();
   
-  Pov_sMessageColor.eRed = LED_PWM_100; 
+  Pov_sMessageColor.eRed   = LED_PWM_100; 
   Pov_sMessageColor.eGreen = LED_PWM_0; 
-  Pov_sMessageColor.eBlue = LED_PWM_100; 
+  Pov_sMessageColor.eBlue  = LED_PWM_100; 
   
-  PovQueueMessage(cau8DefaultMessage);
-  
+  PovQueueMessage(Pov_au8DefaultMessage);
+
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-    Pov_pfStateMachine = PovSM_PovDuty;
+    Pov_pfStateMachine = PovSM_Idle;
   }
   else
   {
@@ -358,7 +364,7 @@ static void PovSM_Pov(void)
       }
     } /* end for i */
                 
-    /* Move to next pixel an wrap back if at end */
+    /* Move to next pixel and wrap back if at end */
     u16BitmapIndex++;
     if(u16BitmapIndex == U8_SCREEN_WIDTH_PX)
     {

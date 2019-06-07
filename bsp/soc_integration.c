@@ -97,23 +97,24 @@ void SocIntegrationHandler(void)
 /* Private functions                                                                                                  */
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------------------------------------------------
-Function: SocIntegrationHandler
 
-Description:
-Assertion handler from the Softdevice.
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn void SocSoftdeviceAssertCallback(uint32_t ulPC, uint16_t usLineNum, const uint8_t *pucFileName)
+@brief Assertion handler from the Softdevice.
 
 Requires:
-  - None
+- NONE
 
 Promises:
-  - Halts the system.
-  - Provides the PC counter, Line Num and the FileName in the SoftDevice Code that caused the assertion.
+- Halts the system.
+- Provides the PC counter, Line Num and the FileName in the SoftDevice Code that caused the assertion.
+
 */
 void SocSoftdeviceAssertCallback(uint32_t ulPC, uint16_t usLineNum, const uint8_t *pucFileName)
 {
-   while (1);
-}
+  while (1);
+  
+} /* end SocSoftdeviceAssertCallback() */
 
 
 
