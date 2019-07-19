@@ -1,9 +1,25 @@
-/**********************************************************************************************************************
-File: i2c_master.c                                                                
+/*!**********************************************************************************************************************
+@file i2c_master.c                                                                
+@brief I2C master implementation using I2C master perihperal but not Nordic SDK.
 
-Description:
-I2C master implementation using I2C master perihperal but not Nordic SDK.
-**********************************************************************************************************************/
+This is an interrupt driven send and receive function that will not block the 
+processor from running other code while read or write transfers are taking place.
+
+------------------------------------------------------------------------------------------------------------------------
+GLOBALS
+- NONE
+
+CONSTANTS
+- 
+TYPES
+- 
+PUBLIC FUNCTIONS
+- 
+PROTECTED FUNCTIONS
+- 
+
+
+***********************************************************************************************************************/
 
 #include "configuration.h"
 
@@ -44,6 +60,32 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 /*!----------------------------------------------------------------------------------------------------------------------
+@fn u32 I2cSetSlaveAddress(u8 u8Address_)
+
+@brief Sets the 7-bit Slave address
+
+Requires:
+@param u8Address_ is the RIGHT-justified 7-bit address of the target I2C device.
+
+Promises:
+- Attempts to load TWI0 ADDRESS with u8Address_
+- Returns 0 if success, else returns error accumulator
+
+*/
+u32 I2cSetSlaveAddress(u8 u8Address_)
+{
+  /* Check that no high bit is set */
+  if( (u8Address_ & 0x80) != 0)
+  {
+    return 1;
+  }
+  
+  NRF_TWI0->ADDRESS = u8Address_;
+  return 0;
+  
+} /* end I2cSetSlaveAddress() */
+
+/*!----------------------------------------------------------------------------------------------------------------------
 @fn bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_)
 
 @brief Sends u8Size_ bytes starting at pu8Data_ to the Slave.
@@ -67,14 +109,14 @@ bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_)
   
   /* Mark peripheral busy and set up globals */
   I2cMaster_bBusy = TRUE;
-  I2cMaster_u8NumberBytes = u8Size_
+  I2cMaster_u8NumberBytes = u8Size_;
   I2cMaster_pu8TransferBytes = pu8Data_;
   
   /* Load first byte and start the transfer */
-  NRF_TWI0->TASKS_STARTTX = 1;
   NRF_TWI0->TXD = *I2cMaster_pu8TransferBytes;
+  NRF_TWI0->TASKS_STARTTX = 1;
   
-
+  return TRUE;
 
 } /* end bool I2cMasterTx() */
 
@@ -97,6 +139,8 @@ Promises:
 */
 void I2cMasterInitialize(void)
 {
+  u32 u32Result = 0;
+  
   /* Set up I²C-specific GPIO */
   NRF_TWI0->PSELSCL = P0_16_INDEX;
   NRF_TWI0->PSELSDA = P0_15_INDEX;  
@@ -130,7 +174,7 @@ void I2cMasterInitialize(void)
 
 
 /*!----------------------------------------------------------------------------------------------------------------------
-@fn ISR void TWI0_IRQHandler(void)
+@fn ISR void SPI0_TWI0_IRQHandler(void)
 @brief Custom TWI0 ISR for handling TWI transmit, receive and Stop 
 
 Requires:
@@ -140,7 +184,7 @@ Promises:
             resets I2cMaster_bBusy so another task may use the peripheral
 
 */
-void TWI0_IRQHandler(void)
+void SPI0_TWI0_IRQHandler(void)
 {
   /* Transmit complete event */
   if(NRF_TWI0->EVENTS_TXDSENT)
@@ -154,12 +198,13 @@ void TWI0_IRQHandler(void)
       if(I2cMaster_bStopAfterTransfer)
       {
         NRF_TWI0->TASKS_STOP = 1;
+        I2cMaster_bBusy = FALSE;
+        I2cMaster_pu8TransferBytes = NULL;
       }
       else
       {
-        /* If no stop, then we are finished, then release the TWI resource */
-        I2cMaster_bBusy = FALSE;
-        I2cMaster_pu8TransferBytes = NULL;
+        /* If no stop, then we are looking to receive bytes so begin repeated
+        start sequence? */
       }
     }
     else
@@ -172,10 +217,10 @@ void TWI0_IRQHandler(void)
   }
 
   /* Receive complete event */
-  if(NRF_TWI0->EVENTS_RXDRDY)
+  if(NRF_TWI0->EVENTS_RXDREADY)
   {
     /* Clear the event */
-    NRF_TWI0->EVENTS_RXDRDY = 0;
+    NRF_TWI0->EVENTS_RXDREADY = 0;
     
     /* Place the byte into the target receive pointer and advance the pointer */
     if(I2cMaster_pu8TransferBytes != NULL)
@@ -193,7 +238,7 @@ void TWI0_IRQHandler(void)
     I2cMaster_pu8TransferBytes = NULL;
   }
 
-} /* end TWI0_IRQHandler() */
+} /* end SPI0_TWI0_IRQHandler() */
 
 
 

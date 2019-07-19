@@ -339,7 +339,7 @@ static void PovSM_Pov(void)
   /* Update current timing */
   PovSetTiming();
   
-  /* Check if it's time to switch pixels columns */
+  /* Check if it's time to switch pixel columns */
   u16UpdateTimer++;
   if(u16UpdateTimer >= Pov_u16UpdateRate)
   {

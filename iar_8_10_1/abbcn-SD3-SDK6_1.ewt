@@ -2465,6 +2465,9 @@
         <group>
             <name>Include</name>
             <file>
+                <name>$PROJ_DIR$\..\application\accelerometer_lis2dh.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\application\bleperipheral_engenuics.h</name>
             </file>
             <file>
@@ -2482,6 +2485,9 @@
         </group>
         <group>
             <name>Source</name>
+            <file>
+                <name>$PROJ_DIR$\..\application\accelerometer_lis2dh.c</name>
+            </file>
             <file>
                 <name>$PROJ_DIR$\..\application\bleperipheral_engenuics.c</name>
             </file>

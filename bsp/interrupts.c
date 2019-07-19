@@ -1,14 +1,9 @@
-/**********************************************************************************************************************
-File: interrupts.c                                                                
+/*!**********************************************************************************************************************
+@file interrupts.c                                                                
+@brief System-level interrupt handlers are defined here.  
 
-Description:
-This is a interrupts .c file new source code.
-System-level interrupt handlers are defined here.  Driver-specific handlers will be found in
-their respective source files.
-
+Driver-specific handlers will be found in their respective source files.
 All SoC interrupts are in soc_integration.c
-
-This might be too fragmented, so we reserve the right to change it up after we play with it for a while.
 
 **********************************************************************************************************************/
 
@@ -29,9 +24,6 @@ extern volatile u32 G_u32SystemTime1s;                 /*!< @brief From main.c *
 extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c */
 
 extern const Nrf51PinConfigurationType G_asBspButtonConfigurations[U8_TOTAL_BUTTONS]; /*!< @brief from board-specific file */
-
-//extern volatile bool G_abButtonDebounceActive[TOTAL_BUTTONS];
-//extern volatile u32 G_au32ButtonDebounceTimeStart[TOTAL_BUTTONS];
 
 
 /***********************************************************************************************************************
@@ -106,6 +98,7 @@ bool SystemEnterCriticalSection(u8* pu8NestedStatus_)
 
 Requires:
 - SoftDevice is enabled.
+
 @PARAM pu8NestedStatus_ is provided by the client to receive the 
 nested status returned by the SVCALL.
 
@@ -225,80 +218,12 @@ void GPIOTE_IRQHandler(void)
     if( (G_asBspButtonConfigurations[i].eChannelNumber != GPIOE_NO_CHANNEL) &&
         (NRF_GPIOTE->EVENTS_IN[G_asBspButtonConfigurations[i].eChannelNumber]) )
     {
-      ButtonStartDebounce(G_asBspButtonConfigurations[i].eChannelNumber) ;
-#if 0
-      /* Disable interrupt and clear channel event */
-      NRF_GPIOTE->INTENCLR = G_asBspButtonConfigurations[i].u32GpioeChannelBit;
-      NRF_GPIOTE->EVENTS_IN[G_asBspButtonConfigurations[i].eChannelNumber]] = 0;   
-
-      Button_asStatus[(u8)eButton].bDebounceActive = TRUE;
-      Button_asStatus[(u8)eButton].u32DebounceTimeStart = G_u32SystemTime1ms;
-#endif
+      ButtonStartDebounce(G_asBspButtonConfigurations[i].eChannelNumber);
     }
   } /* end for (i) */
 
 } /* end GPIOTE_IRQHandler() */
 
-
-
-
-#if 0
-/* Original abbcn code - primed for kill */
-
-/*--------------------------------------------------------------------------------------------------------------------*/
-/* Handlers                                                                                                  */
-/*--------------------------------------------------------------------------------------------------------------------*/
-
-void HardFault_Handler(u32 u32ProgramCounter_, u32 u32LinkRegister_)
-{
-  (void)u32ProgramCounter_;
-  (void)u32LinkRegister_;
-
-   while(1); // loop for debugging
-}
-
-
-void TIMER1_IRQHandler(void)
-{ 
-  while(1);
-}
-
-void RTC1_IRQHandler(void)
-{
-  // Clear the Tick Event
-  NRF_RTC1->EVENTS_TICK = 0;
-  
-  // Update global counters.
-  G_u32SystemTime1ms++;
-  if ((G_u32SystemTime1ms % 1000) == 0)
-  {
-    G_u32SystemTime1s++;
-  }
-}
-
-
-/*!----------------------------------------------------------------------------------------------------------------------
-@fn ISR void SD_EVT_IRQHandler(void)
-
-@brief Processes soft device events.
-
-Requires:
-  - enabled via sd_nvic_XXX
-
-Promises:
-  -  Sets global system flags indicating that BLE and ANT events are pending.
-     It is possible that either ANT or BLE events OR ANT & BLE events are pending.
-     The application shall handle all the cases. 
-  
-*/
-void SD_EVT_IRQHandler(void)
-{
-  /* Set Flag that ANT and BLE Events pending. */
-  G_u32SystemFlags |= (_SYSTEM_PROTOCOL_EVENT); 
-  
-} /* end SD_EVT_IRQHandler() */
-
-#endif
 
 
 

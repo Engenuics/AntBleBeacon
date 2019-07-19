@@ -4,7 +4,7 @@
 
 The application handles all debouncing and button press / hold detection for buttons
 used on development boards with the nRF51 processor.  All buttons use dedicated
-hardwware lines (active high or active low), with interrupts to trigger the 
+hardware lines (active high or active low), with interrupts to trigger the 
 start and end of the action.
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -192,8 +192,8 @@ bool IsButtonHeld(ButtonNameType eButton_, u32 u32ButtonHeldTime_)
 } /* end IsButtonHeld() */
 
 
-/*--------------------------------------------------------------------------------------------------------------------*/
-/* Protected Functions */
+/*------------------------------------------------------------------------------------------------------------------*/
+/*! @protectedsection */                                                                                            
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 /*!----------------------------------------------------------------------------------------------------------------------

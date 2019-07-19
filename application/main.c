@@ -73,7 +73,7 @@ void main(void)
   /* Driver initialization */
   LedInitialize();
   ButtonInitialize();
-  // I2cInitialize();
+  I2cMasterInitialize();
 
 #ifdef SOFTDEVICE_ENABLED
   ANTIntegrationInitialize();

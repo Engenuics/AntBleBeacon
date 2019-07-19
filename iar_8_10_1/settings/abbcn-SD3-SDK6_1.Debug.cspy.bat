@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\EWARM_8_10_1\common\bin\cspybat" -f "D:\EiE\EiE_Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.general.xcl" --backend -f "D:\EiE\EiE_Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.driver.xcl" 
+"C:\Program Files\IAR Systems\EWARM_8_10_1\common\bin\cspybat" -f "D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.general.xcl" --backend -f "D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\EWARM_8_10_1\common\bin\cspybat" -f "D:\EiE\EiE_Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\EiE\EiE_Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.driver.xcl" 
+"C:\Program Files\IAR Systems\EWARM_8_10_1\common\bin\cspybat" -f "D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.general.xcl" "--debug_file=%~1" --backend -f "D:\EiE\EiE Git\AntBleBeacon\iar_8_10_1\settings\abbcn-SD3-SDK6_1.Debug.driver.xcl" 
 
 @echo off 
 :end

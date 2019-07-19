@@ -88,6 +88,7 @@ Includes
 
 
 /* Application header files */
+#include "accelerometer_lis2dh.h"
 #include "pov.h"
 #include "user_app1.h"
 
