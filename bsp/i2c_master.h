@@ -68,6 +68,12 @@ Function Declarations
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
 u32 I2cSetSlaveAddress(u8 u8Address_);
+bool I2cTakeSemaphore(void);
+void I2cGiveSemaphore(void);
+
+bool I2cCheckBusy(void);
+bool I2cCheckRepeatedStart(void);
+
 bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_);
 
 

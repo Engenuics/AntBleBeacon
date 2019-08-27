@@ -2,7 +2,7 @@
 @file i2c_master.c                                                                
 @brief I2C master implementation using I2C master perihperal but not Nordic SDK.
 
-This is an interrupt driven send and receive function that will not block the 
+This is interrupt-driven send and receive function that will not block the 
 processor from running other code while read or write transfers are taking place.
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ Global variable definitions with scope across entire project.
 All Global variable names shall start with "G_xxI2C"
 ***********************************************************************************************************************/
 /* New variables */
-volatile u32 G_u32I2cMasterFlags;                       /* Global state flags */
+volatile u32 G_u32I2cMasterFlags;                       /*!< @brief Global state flags */
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -42,13 +42,15 @@ extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c *
 Global variable definitions with scope limited to this local application.
 Variable names shall start with "I2cMaster_" and be declared as static.
 ***********************************************************************************************************************/
-static u32 I2cMaster_u32Timeout;                      /* Timeout counter used across states */
+static u32 I2cMaster_u32Timeout;               /*!< @brief Timeout counter used across states */
 
-static bool I2cMaster_bBusy;       
+static bool I2cMaster_bBusy;                   /*!< @brief TRUE when TWI peripheral is in use */
+static bool I2cMaster_bSemaphoreTaken;              /*!< @brief Given to task to claim TWI peripheral */    
+static bool I2cMaster_bRepeatedStart;          /*!< @brief TRUE when TWI peripheral has completed a repeated start */   
 
-static u8 I2cMaster_u8NumberBytes;       
-static u8* I2cMaster_pu8TransferBytes;   
-static bool I2cMaster_bStopAfterTransfer;
+static u8 I2cMaster_u8NumberBytes;             
+static u8* I2cMaster_pu8TransferBytes;         
+static bool I2cMaster_bStopAfterTransfer;      /*!< @brief TRUE if stop condition should be set after transfer */
 
 
 /**********************************************************************************************************************
@@ -85,10 +87,14 @@ u32 I2cSetSlaveAddress(u8 u8Address_)
   
 } /* end I2cSetSlaveAddress() */
 
+
 /*!----------------------------------------------------------------------------------------------------------------------
 @fn bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_)
 
 @brief Sends u8Size_ bytes starting at pu8Data_ to the Slave.
+
+Client can check if peripheral is busy to determine if transmission
+is complete.  
 
 Requires:
 @param u8Size_ is the number of bytes to send
@@ -121,6 +127,104 @@ bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_)
 } /* end bool I2cMasterTx() */
 
 
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn bool I2cTakeSemaphore(void)
+
+@brief Lets a client task take the TWI semaphore and gain access 
+to the TWI peripheral (if available)
+
+Requires:
+- I2cMaster_bSemaphoreTaken is in the correct state
+
+Promises:
+- Returns TRUE if I2cMaster_bSemaphoreTaken is available (currently FALSE)
+  and sets I2cMaster_bSemaphoreTaken to TRUE
+- Otherwise returns FALSE
+
+*/
+bool I2cTakeSemaphore(void)
+{
+  if(I2cMaster_bSemaphoreTaken)
+  {
+    return(FALSE);
+  }
+  else
+  {
+    I2cMaster_bSemaphoreTaken = TRUE;
+    return(TRUE);
+  }
+  
+} /* end I2cTakeSemaphore() */
+
+
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn bool I2cGiveSemaphore(void)
+
+@brief Returns the TWI semaphore
+
+Currently there is no provision to prevent a task from returning
+the semaphore that they don't have, which would then make it 
+available.  This is obviously incorrect and can be updated
+in the future to improve the robustness of the system.
+
+Requires:
+- The client currently has the semaphore.
+- I2cMaster_bSemaphoreTaken is TRUE.
+
+Promises:
+- I2cMaster_bSemaphoreTaken is FALSE
+
+*/
+void I2cGiveSemaphore(void)
+{
+  I2cMaster_bSemaphoreTaken = FALSE;
+  
+} /* end I2cGiveSemaphore() */
+
+
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn bool I2cCheckBusy(void)
+
+@brief Returns the value of I2cMaster_bBusy.
+
+Client can check if peripheral is busy.  
+
+Requires:
+- NONE
+
+Promises:
+- Returns TRUE if I2cMaster_bBusy is TRUE
+
+*/
+bool I2cCheckBusy(void)
+{
+  return(I2cMaster_bBusy);
+  
+} /* end I2cCheckBusy() */
+   
+
+
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn bool I2cCheckRepeatedStart(void)
+
+@brief Returns the value of I2cMaster_bRepeatedStart.
+
+Client can check if peripheral has generated a repeated start.  
+
+Requires:
+- NONE
+
+Promises:
+- Returns TRUE if I2cMaster_bRepeatedStart is TRUE
+
+*/
+bool I2cCheckRepeatedStart(void)
+{
+  return(I2cMaster_bRepeatedStart);
+  
+} /* end I2cCheckRepeatedStart() */
+
+                 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -159,6 +263,7 @@ void I2cMasterInitialize(void)
   NRF_TWI0->ENABLE = 0x5;
   
   I2cMaster_bBusy = FALSE;
+  I2cMaster_bRepeatedStart = FALSE;
   
 #ifdef SOFTDEVICE_ENABLED  
   /* TWI0 interrupts */
@@ -194,17 +299,20 @@ void SPI0_TWI0_IRQHandler(void)
     I2cMaster_u8NumberBytes--;
     if(I2cMaster_u8NumberBytes == 0)
     {
+      I2cMaster_pu8TransferBytes = NULL;
+ 
       /* Check for STOP request */
       if(I2cMaster_bStopAfterTransfer)
       {
         NRF_TWI0->TASKS_STOP = 1;
         I2cMaster_bBusy = FALSE;
-        I2cMaster_pu8TransferBytes = NULL;
+        I2cMaster_bRepeatedStart = FALSE;
       }
       else
       {
-        /* If no stop, then we are looking to receive bytes so begin repeated
-        start sequence? */
+        /* If no stop, begin repeated start sequence and update status bool */
+        NRF_TWI0->TASKS_START = 1;
+        I2cMaster_bRepeatedStart = TRUE;
       }
     }
     else
