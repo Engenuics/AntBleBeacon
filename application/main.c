@@ -26,7 +26,7 @@ Global variable definitions with scope limited to this local application.
 Variable names shall start with "Main_" and be declared as static.
 ***********************************************************************************************************************/
 static u32 Main_u32ErrorCode;
-static u8 Main_u8TestMessage[] = "9876 test message from ANT";
+//static u8 Main_u8TestMessage[] = "9876 test message from ANT";
 
 
 /***********************************************************************************************************************
@@ -97,7 +97,7 @@ void main(void)
     /* Driver and Application State Machines */
     LedRunActiveState();
     ButtonRunActiveState();
-    //I2cRunActiveState();
+    //I2cRunActiveState(); Currently not required.
    
     //AccelRunActiveState();
     PovRunActiveState();

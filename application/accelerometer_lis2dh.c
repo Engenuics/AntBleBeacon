@@ -69,6 +69,22 @@ void Lis2dhInitialize(void)
 } /* end Lis2dhInitialize() */
 
 
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn void Lis2dhSetResolution(void)
+
+@brief Initializes the task and its variables.
+
+Requires:
+-
+
+Promises:
+  - 
+
+*/
+void Lis2dhInitialize(void)
+{
+
+} /* end Lis2dhInitialize() */
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Private functions                                                                                                  */

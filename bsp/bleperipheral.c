@@ -24,7 +24,7 @@ extern volatile u32 G_u32SystemFlags;                  /*!< @brief From main.c *
 
 /***********************************************************************************************************************
 Global variable definitions with scope limited to this local application.
-Variable names shall start with "SocInt_" and be declared as static.
+Variable names shall start with "ble_gap_" and be declared as static.
 ***********************************************************************************************************************/
 //static u32 bleperipheral_u32Timeout;                      /* Timeout counter used across states */
 static ble_gap_adv_params_t             m_adv_params;                                /**< Parameters to be passed to the stack when starting advertising. */
@@ -131,7 +131,8 @@ bool bleperipheralEventHandler(ble_evt_t* p_ble_evt)
 Function: bool bleperipheralIsConnectedandEnabled(void)
 
 Description:
-The Event handler which handles the various GATT and GAP events received from the SoftDevice once BLE Services have been activated.
+The Event handler which handles the various GATT and GAP events received 
+from the SoftDevice once BLE Services have been activated.
 
 Requires:
   - ble_evt_t*: Pointer to the single buffer holding the current ble_evt_t from the SoftDevice.

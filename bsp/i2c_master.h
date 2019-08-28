@@ -75,6 +75,7 @@ bool I2cCheckBusy(void);
 bool I2cCheckRepeatedStart(void);
 
 bool I2cMasterTx(u8 u8Size_, u8* pu8Data_, bool bStopAfterTransfer_);
+bool I2cMasterRx(u8 u8Size_, u8* pu8Data_);
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
