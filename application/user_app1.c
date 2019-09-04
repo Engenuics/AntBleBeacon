@@ -1,7 +1,14 @@
 /*!*********************************************************************************************************************
 @file user_app1.c                                                                
-@brief User's tasks / applications are written here.  This description
-should be replaced by something specific to the task.
+@brief Task to display accelerometer readings visual using the RGB LEDs.
+
+A range is selected to scale the readings via a compiler directive.
+For example, a 2g range will set the accelerometer to that mode and 
+then use 0.25g per LED to indicate.  In this mode, half of the LEDs
+of one color should be on in the exact 1g state.  
+
+An optional feature would be to set this dynamically when firmware 
+starts.  Later.
 
 ----------------------------------------------------------------------------------------------------------------------
 To start a new task using this user_app1 as a template:

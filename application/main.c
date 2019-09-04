@@ -82,8 +82,8 @@ void main(void)
 #endif
   
   /* Application initialization */
-  //AccelInitialize();
-  PovInitialize();
+  Lis2dhInitialize();
+  //PovInitialize();
   UserApp1Initialize();
   
   /* Exit initialization */
@@ -99,8 +99,8 @@ void main(void)
     ButtonRunActiveState();
     //I2cRunActiveState(); Currently not required.
    
-    //AccelRunActiveState();
-    PovRunActiveState();
+    Lis2dhActiveState();
+    //PovRunActiveState();
     UserApp1RunActiveState();
 
     SystemSleep();

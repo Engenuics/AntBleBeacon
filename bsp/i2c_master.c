@@ -68,6 +68,9 @@ Function Definitions
 
 Requires:
 @param u8Address_ is the RIGHT-justified 7-bit address of the target I2C device.
+This does NOT include any read or write bits.
+
+e.g. 
 
 Promises:
 - Attempts to load TWI0 ADDRESS with u8Address_

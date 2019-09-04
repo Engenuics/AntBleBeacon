@@ -16,12 +16,7 @@ CONSTANTS
 - NONE
 
 TYPES
-- LedNameType (devboard-specific)
-
- (from eief1-pcb-01):
- {WHITE, PURPLE, BLUE, CYAN, 
-  GREEN, YELLOW, ORANGE, RED, 
-  LCD_RED, LCD_GREEN, LCD_BLUE}
+- LedNameType (devboard-specific: see typedef in boardname.h)
 
 - LedRateType:
   {LED_0HZ = 0, LED_0_5HZ = 1000, LED_1HZ = 500, LED_2HZ = 250, LED_4HZ = 125, LED_8HZ = 63,

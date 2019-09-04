@@ -65,7 +65,7 @@
     </DisassembleMode>
     <Breakpoints2>
         <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\bsp\abbcn-ehdw-01.c}.92.1" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\bsp\i2c_master.c}.190.1" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\bsp\i2c_master.c}.193.1" 0 0 1 "" 0 "" 0</Bp1>
         <Count>2</Count>
     </Breakpoints2>
     <Aliases>
