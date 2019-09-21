@@ -20,11 +20,7 @@ Type Definitions
 @enum AccelResolutionType
 @brief Available resolutions for the LIS2DH
 */
-typedef enum{
-  LedRateType eRed;
-  LedRateType eGreen;
-  LedRateType eBlue;
-}PovColorType;
+typedef enum{ACCEL_RES_2, ACCEL_RES_4, ACCEL_RES_8, ACCEL_RES_16} AccelResolutionType;
 
 
 /**********************************************************************************************************************
@@ -34,7 +30,7 @@ Constants / Definitions
 #define U8_LIS2DH_ERROR_NOI2C    (u8)0x01   
 
 /* I²C Addresses */
-#define LIS2DH_BASE_ADDRESS      (u8)0x33      /* Read address (assumes SDO tied high) */
+#define LIS2DH_BASE_ADDRESS      (u8)0x19      /* b'0001 1001' 6 bits (no R/W) right justifed (assumes SDO tied high) */
 #define LIS2DH_READ              (u8)0x33      /* Read address (assumes SDO tied high) */
 #define LIS2DH_WRITE             (u8)0x32      /* Write address (assumes SDO tied high) */
 
@@ -281,7 +277,8 @@ Function Declarations
 /*! @protectedsection */                                                                                            
 /*--------------------------------------------------------------------------------------------------------------------*/
 void Lis2dhInitialize(void);
-void Lis2dhActiveState(void);
+void Lis2dhRunActiveState(void);
+void Lis2dhSetResolution(void);
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -298,13 +295,14 @@ void Lis2dhSetError(u8 u8ErrorCode_);
 /***********************************************************************************************************************
 State Machine Declarations
 ***********************************************************************************************************************/
+static void Lis2dhSM_Configure(void);
+
 static void Lis2dhSM_Idle(void);
 
 static void Lis2dhSM_CommBusyWait(void);
 static void Lis2dhSM_Error(void);
 
 
-static void Lis2dhSM_CommBusyWait(void)          
 
 
 #endif /* __LIS2DH */

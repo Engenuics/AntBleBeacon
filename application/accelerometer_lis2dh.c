@@ -77,8 +77,14 @@ void Lis2dhInitialize(void)
   {
     Lis2dhSetError(U8_LIS2DH_ERROR_NOI2C);
   }
-  /* Setup for I2C initialization */
-  I2cSetSlaveAddress(
+  else
+  {
+    /* Setup for I2C initialization */
+    I2cSetSlaveAddress(LIS2DH_BASE_ADDRESS);
+    
+    Lis2dh_pfStateMachine = Lis2dhSM_Configure;
+    Lis2dh_pfNextState = Lis2dhSM_Configure;
+  }
 
 } /* end Lis2dhInitialize() */
 
@@ -98,7 +104,7 @@ Promises:
 - Calls the function to pointed by the state machine function pointer
 
 */
-void Lis2dhActiveState(void)
+void Lis2dhRunActiveState(void)
 {
   Lis2dh_pfStateMachine();
 
@@ -151,7 +157,7 @@ void Lis2dhSetError(u8 u8ErrorCode_)
   /* Turn off all LEDs */
   for(u8 i = 0; i < U8_TOTAL_LEDS; i++)
   {
-    LedOff( (LedNameType)i) );
+    LedOff( (LedNameType)i);
   }
   
   /* Indicate the error code by turning on corresponding LED
@@ -166,6 +172,13 @@ void Lis2dhSetError(u8 u8ErrorCode_)
 State Machine Function Definitions
 **********************************************************************************************************************/
 /*-------------------------------------------------------------------------------------------------------------------*/
+/* What does this state do? */
+static void Lis2dhSM_Configure(void)
+{
+    
+} /* end Lis2dhSM_Configure() */
+
+
 /* What does this state do? */
 static void Lis2dhSM_Idle(void)
 {
@@ -183,6 +196,7 @@ static void Lis2dhSM_CommBusyWait(void)
   }
   
 } /* end Lis2dhSM_CommBusyWait() */
+
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Hold the error state */

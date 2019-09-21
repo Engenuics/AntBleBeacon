@@ -53,6 +53,7 @@ void PovRunActiveState(void);
 State Machine Declarations
 ***********************************************************************************************************************/
 static void PovSM_Idle(void);    
+static void PovSM_LedSequence(void);
 static void PovSM_PovDuty(void);
 static void PovSM_Pov(void);
 
@@ -79,6 +80,7 @@ Constants / Definitions
 
 #define U16_DEFAULT_TIMING_MS  (u16)250
 
+#define U16_LED_SEQUENCE_DELAY (u16)200
 
 #endif /* __POV_H */
 

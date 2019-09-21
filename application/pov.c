@@ -55,6 +55,7 @@ static u8 Pov_au8ScreenBitmap[U8_SCREEN_WIDTH_PX];
 
 static u8 Pov_au8DefaultMessage[] = "enGENIUS";
 
+static 
 
 /**********************************************************************************************************************
 Function Definitions
@@ -182,7 +183,7 @@ void PovQueueMessage(u8* pu8Message_)
 /*!----------------------------------------------------------------------------------------------------------------------
 @fn void LedDuty(void)
 
-@brief Sets the LEDs to a blend from red to blue.
+@brief Sets the LEDs to a blend from red to purple.
 
 Requires:
 - NONE
@@ -249,7 +250,7 @@ Promises:
 */
 void PovInitialize(void)
 {
-  LedRainbow();
+  LedAllOff();
   
   Pov_sMessageColor.eRed   = LED_PWM_100; 
   Pov_sMessageColor.eGreen = LED_PWM_0; 
@@ -260,7 +261,7 @@ void PovInitialize(void)
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-    Pov_pfStateMachine = PovSM_Idle;
+    Pov_pfStateMachine = PovSM_LedSequence;
   }
   else
   {
@@ -313,6 +314,161 @@ static void PovSM_Idle(void)
   }
     
 } /* end PovSM_Idle() */
+
+
+/*-------------------------------------------------------------------------------------------------------------------*/
+/* Display sequence of lights cycling through each of the available 7 colors.*/
+static void PovSM_LedSequence(void)
+{
+  LedNameType aeLedSequence[] = {RED0, RED1, RED2, RED3, RED4, RED5, RED6, RED7,
+                                 GRN0, GRN1, GRN2, GRN3, GRN4, GRN5, GRN6, GRN7,
+                                 BLU0, BLU1, BLU2, BLU3, BLU4, BLU5, BLU6, BLU7};
+  
+  static u16 u16LedSequenceTimer = 0;
+  static bool bRedActive = TRUE;
+  static bool bGreenActive = FALSE;
+  static bool bBlueActive = FALSE;
+  static u8 u8CurrentLed = 0;
+  static u8 u8CurrentColor = 0;
+  static bool bUp = TRUE;
+
+  
+  /* Check for LED change */
+  u16LedSequenceTimer++;
+  if(u16LedSequenceTimer == U16_LED_SEQUENCE_DELAY)
+  {
+    u16LedSequenceTimer = 0;
+
+#if 0    
+    if(u8CurrentLed == 0)
+    {
+      LedAllOff();
+    }
+#endif
+    
+    
+    /* Check for direction change */
+    if(bUp)
+    {
+      /* Activate the current LED(s) */
+      if(bRedActive)
+      {
+        LedOn( aeLedSequence[u8CurrentLed] );
+      }
+
+      if(bGreenActive)
+      {
+        LedOn( aeLedSequence[u8CurrentLed + NUM_LEDS_PER_COLOR] );
+      }
+
+      if(bBlueActive)
+      {
+        LedOn( aeLedSequence[u8CurrentLed + (NUM_LEDS_PER_COLOR * 2)] );
+      }
+
+      u8CurrentLed++;
+      if(u8CurrentLed == NUM_LEDS_PER_COLOR)
+      {
+        bUp = FALSE;
+        u8CurrentLed--;
+      }
+    }
+    else
+    {
+      /* De-activate the current LED(s) */
+      if(bRedActive)
+      {
+        LedOff( aeLedSequence[u8CurrentLed] );
+      }
+
+      if(bGreenActive)
+      {
+        LedOff( aeLedSequence[u8CurrentLed + NUM_LEDS_PER_COLOR] );
+      }
+
+      if(bBlueActive)
+      {
+        LedOff( aeLedSequence[u8CurrentLed + (NUM_LEDS_PER_COLOR * 2)] );
+      }
+      u8CurrentLed--;
+    }
+    
+    if(u8CurrentLed == 0)
+    {
+      /* Get ready for next color */
+      bUp = TRUE;
+      LedAllOff();
+     
+      bRedActive = FALSE;
+      bGreenActive = FALSE;
+      bBlueActive = FALSE;
+      
+      u8CurrentColor++;
+      if(u8CurrentColor == 7)
+      {
+        u8CurrentColor = 0;
+      }
+      
+      switch (u8CurrentColor)
+      {
+        case 0: /* RED */
+        {
+          bRedActive = TRUE;
+          break;
+        }
+        case 1: /* YELLOW */
+        {
+          bRedActive = TRUE;
+          bGreenActive = TRUE;
+          break;
+        }
+        case 2: /* GREEN */
+        {
+          bGreenActive = TRUE;
+          break;
+        }
+        case 3: /* CYAN */
+        {
+          bGreenActive = TRUE;
+          bBlueActive = TRUE;
+          break;
+        }
+        case 4: /* BLUE */
+        {
+          bBlueActive = TRUE;
+          break;
+        }
+        case 5: /* PURPLE */
+        {
+          bRedActive = TRUE;
+          bBlueActive = TRUE;
+          break;
+        }
+        case 6: /* WHITE */
+        {
+          bRedActive = TRUE;
+          bGreenActive = TRUE;
+          bBlueActive = TRUE;
+          break;
+        }
+        default:
+        {         
+          break;
+        }
+      } /* end switch */
+    } /* end if(u8CurrentLed == NUM_LEDS_PER_COLOR) */   
+
+  } /* end if(u16LedSequenceTimer = U16_LED_SEQUENCE_DELAY) */
+  
+  /* Check for new state */
+  if(WasButtonPressed(BUTTON0))
+  {
+    ButtonAcknowledge(BUTTON0);
+    PovSetTiming();
+    Pov_pfStateMachine = PovSM_Pov;
+  }
+    
+} /* end PovSM_LedSequence() */
 
 
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -378,7 +534,7 @@ static void PovSM_Pov(void)
   {
     ButtonAcknowledge(BUTTON0);
     LedRainbow();
-    Pov_pfStateMachine = PovSM_Idle;
+    Pov_pfStateMachine = PovSM_LedSequence;
   }
   
 } /* end PovSM_Pov() */

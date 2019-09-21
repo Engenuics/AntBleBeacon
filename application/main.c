@@ -73,7 +73,7 @@ void main(void)
   /* Driver initialization */
   LedInitialize();
   ButtonInitialize();
-  I2cMasterInitialize();
+  //I2cMasterInitialize();
 
 #ifdef SOFTDEVICE_ENABLED
   ANTIntegrationInitialize();
@@ -82,8 +82,8 @@ void main(void)
 #endif
   
   /* Application initialization */
-  Lis2dhInitialize();
-  //PovInitialize();
+  //Lis2dhInitialize();
+  PovInitialize();
   UserApp1Initialize();
   
   /* Exit initialization */
@@ -99,8 +99,8 @@ void main(void)
     ButtonRunActiveState();
     //I2cRunActiveState(); Currently not required.
    
-    Lis2dhActiveState();
-    //PovRunActiveState();
+    //Lis2dhRunActiveState();
+    PovRunActiveState();
     UserApp1RunActiveState();
 
     SystemSleep();
